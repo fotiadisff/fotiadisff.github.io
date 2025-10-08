@@ -6,6 +6,7 @@
   <meta name="description" content="Filippos Fotiadis - Postdoctoral Fellow at UT Austin researching game theory, control theory, and machine learning for autonomous systems security and resilience.">
   <meta name="keywords" content="game theory, control theory, autonomous systems, cyber-physical security, reinforcement learning, aerospace, Filippos Fotiadis">
   <meta name="author" content="Filippos Fotiadis">
+  <meta name="color-scheme" content="light only">
   <title>Filippos Fotiadis</title>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TR0TTHWL7R"></script>
@@ -36,6 +37,7 @@
       line-height:1.6;
       color:var(--text);
       background:#fff;
+      background-color: white !important;
     }
 
     .container{
@@ -289,14 +291,38 @@
 
     @media (max-width:768px){
       .container{ flex-direction:column; }
-      .top-nav { padding: 0 10px; }
-      .top-nav-menu { gap: 20px; font-size: 0.9em; }
-      .sidebar{
-        width:100%; position:relative; height:auto;
-        border-right:none; border-bottom:1px solid var(--line);
-        top: 0;
+      .top-nav { 
+        padding: 0 10px; 
+        height: 50px; /* Slightly smaller for mobile */
       }
-      .main-content{ margin-left:0; margin-top: 60px; padding:30px 20px; }
+      .top-nav-menu { 
+        gap: 15px; 
+        font-size: 0.85em; 
+      }
+      .sidebar{
+        width:100%; 
+        position:relative; 
+        height:auto;
+        border-right:none; 
+        border-bottom:1px solid var(--line);
+        top: 0;
+        padding-top: 40px; /* More padding to avoid photo cutoff */
+      }
+      .profile-photo{
+        width:150px; 
+        height:150px; /* Slightly smaller on mobile */
+        margin-top: 10px; /* Add margin to prevent cutoff */
+      }
+      .main-content{ 
+        margin-left:0; 
+        margin-top: 50px; /* Match the mobile nav height */
+        padding:30px 20px; 
+      }
+      
+      /* Ensure content doesn't go under fixed nav on mobile */
+      body {
+        padding-top: 50px; /* Add body padding for fixed nav */
+      }
     }
   </style>
 </head>
@@ -364,7 +390,7 @@
           <p><strong>Collaborators:</strong> Quentin Rommel, Gregory Falco, Ufuk Topcu</p>
           <p>
             We study pursuit–evasion between two spacecraft in cislunar orbit, formulated as a zero-sum dynamic game in the circular restricted three-body problem.
-			The evader avoids capture by adjusting its orbital phasing and exploiting the orbit’s stable and unstable manifolds.
+			The evader avoids capture by adjusting its orbital phasing and exploiting the orbit's stable and unstable manifolds.
           </p>
           <div style="text-align:center; margin:20px 0;">
             <img src="pdfs/evade.gif" alt="Cislunar pursuit-evasion visualization" style="max-width:95%; height:auto;">
@@ -428,7 +454,7 @@
           <p><strong>Collaborators:</strong> Quentin Rommel, Gregory Falco, Ufuk Topcu</p>
           <p>
             We study pursuit–evasion between two spacecraft in cislunar orbit, formulated as a zero-sum dynamic game in the circular restricted three-body problem. 
-			The evader avoids capture by adjusting its orbital phasing and exploiting the orbit’s stable and unstable manifolds.
+			The evader avoids capture by adjusting its orbital phasing and exploiting the orbit's stable and unstable manifolds.
           </p>
           <div style="text-align:center; margin:20px 0;">
             <img src="pdfs/evade.gif" alt="Cislunar pursuit–evasion visualization" style="max-width:95%; height:auto;">
@@ -536,7 +562,7 @@
           <p><strong>Collaborators:</strong> Kyriakos G. Vamvoudakis</p>
           <p>
             We propose the first model-free sensor selection framework for unknown cyber-physical systems (CPS). 
-			Given a large pool of available sensors, our goal is to select a subset that maximizes the system’s observability. 
+			Given a large pool of available sensors, our goal is to select a subset that maximizes the system's observability. 
 			Unlike existing methods that rely on explicit system models, our approach performs this optimization directly from input–output data, without prior knowledge of the system dynamics.
           </p>
         </div>
