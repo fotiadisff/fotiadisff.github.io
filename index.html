@@ -8,7 +8,6 @@
   <meta name="author" content="Filippos Fotiadis">
   <meta name="color-scheme" content="light only">
   <title>Filippos Fotiadis</title>
-  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TR0TTHWL7R"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -293,7 +292,7 @@
       .container{ flex-direction:column; }
       .top-nav { 
         padding: 0 10px; 
-        height: 50px; /* Slightly smaller for mobile */
+        height: 50px;
       }
       .top-nav-menu { 
         gap: 15px; 
@@ -306,32 +305,30 @@
         border-right:none; 
         border-bottom:1px solid var(--line);
         top: 0;
-        padding-top: 40px; /* More padding to avoid photo cutoff */
+        padding-top: 40px;
       }
       .profile-photo{
         width:150px; 
-        height:150px; /* Slightly smaller on mobile */
-        margin-top: 10px; /* Add margin to prevent cutoff */
+        height:150px;
+        margin-top: 10px;
       }
       .main-content{ 
         margin-left:0; 
-        margin-top: 50px; /* Match the mobile nav height */
+        margin-top: 50px;
         padding:30px 20px; 
       }
       
-      /* Ensure content doesn't go under fixed nav on mobile */
       body {
-        padding-top: 50px; /* Add body padding for fixed nav */
+        padding-top: 50px;
       }
       
-      /* Make images larger on mobile */
       .research-item img {
-        max-width: 100% !important; /* Use full width on mobile */
+        max-width: 100% !important;
         margin: 15px 0;
       }
       
       .research-item {
-        padding: 20px 16px; /* Reduce padding on mobile for more space */
+        padding: 20px 16px;
       }
     }
   </style>
