@@ -577,10 +577,16 @@
           <p>Purdue University</p>
         </div>
       </div>
-      <div id="registration" class="section-head" style="margin-top:56px;"><h2>Registration</h2></div>
-      <p class="org-contact">Register through the official <a href="https://cdc2026.ieeecss.org/registration" target="_blank" rel="noopener">IEEE CDC 2026 registration page</a>. Early registration closes September 4, 2026.</p>
-      <div class="section-head" style="margin-top:40px;"><h2>Contact</h2></div>
+      <div class="section-head" style="margin-top:56px;"><h2>Contact</h2></div>
       <p class="org-contact">For any questions regarding the workshop, please contact the <a href="mailto:ffotiadis@utexas.edu">workshop organizers</a>.</p>
+    </div>
+  </section>
+
+  <!-- ---------- Registration ---------- -->
+  <section id="registration">
+    <div class="container">
+      <div class="section-head"><h2>Registration</h2></div>
+      <p class="org-contact">Register through the official <a href="https://cdc2026.ieeecss.org/registration" target="_blank" rel="noopener">IEEE CDC 2026 registration page</a>. Early registration closes September 4, 2026.</p>
     </div>
   </section>
 
@@ -641,17 +647,31 @@
     // Scrollspy: highlight active nav link
     var sections = document.querySelectorAll('section, .hero');
     var links = document.querySelectorAll('#menu a');
-    window.addEventListener('scroll', function () {
-      var pos = window.scrollY + 120;
-      sections.forEach(function (sec) {
-        var link = document.querySelector('#menu a[href="#' + sec.id + '"]');
-        if (!link) return;
-        if (pos >= sec.offsetTop && pos < sec.offsetTop + sec.offsetHeight) {
-          links.forEach(function (l) { l.classList.remove('active'); });
-          link.classList.add('active');
-        }
+    function setActive(id) {
+      links.forEach(function (l) {
+        l.classList.toggle('active', l.getAttribute('href') === '#' + id);
       });
-    });
+    }
+    function onScroll() {
+      var pos = window.scrollY + 120;
+      // If scrolled to (or near) the bottom, force the last linked section active
+      if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4) {
+        for (var i = sections.length - 1; i >= 0; i--) {
+          if (document.querySelector('#menu a[href="#' + sections[i].id + '"]')) {
+            setActive(sections[i].id);
+            return;
+          }
+        }
+      }
+      var current = null;
+      sections.forEach(function (sec) {
+        if (!document.querySelector('#menu a[href="#' + sec.id + '"]')) return;
+        if (pos >= sec.offsetTop) current = sec.id;
+      });
+      if (current) setActive(current);
+    }
+    window.addEventListener('scroll', onScroll);
+    onScroll();
   </script>
 
 </body>
