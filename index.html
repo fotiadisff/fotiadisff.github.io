@@ -1,848 +1,679 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Filippos Fotiadis - Postdoctoral Fellow at UT Austin researching game theory, control theory, and machine learning for autonomous systems security and resilience.">
-  <meta name="keywords" content="game theory, control theory, autonomous systems, cyber-physical security, reinforcement learning, aerospace, Filippos Fotiadis">
-  <meta name="author" content="Filippos Fotiadis">
-  <meta name="color-scheme" content="light only">
-  <title>Filippos Fotiadis</title>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TR0TTHWL7R"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-TR0TTHWL7R');
-  </script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.4/css/academicons.min.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Security &amp; Safety of Space Systems — CDC 2026 Workshop</title>
+  <meta name="description" content="A full-day workshop at IEEE CDC 2026 in Honolulu on the security and safety of space systems from a control-theoretic perspective. December 14, 2026.">
+
+  <!-- Open Graph / social sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Security &amp; Safety of Space Systems — CDC 2026 Workshop">
+  <meta property="og:description" content="A full-day workshop at IEEE CDC 2026 in Honolulu on the security and safety of space systems from a control-theoretic perspective.">
+  <meta property="og:url" content="https://fotiadisff.github.io/cdc2026-space-security/">
+  <meta property="og:image" content="https://fotiadisff.github.io/cdc2026-space-security/images/panel-ground.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Security &amp; Safety of Space Systems — CDC 2026 Workshop">
+  <meta name="twitter:description" content="A full-day workshop at IEEE CDC 2026 in Honolulu on the security and safety of space systems from a control-theoretic perspective.">
+  <meta name="twitter:image" content="https://fotiadisff.github.io/cdc2026-space-security/images/panel-ground.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
   <style>
-    :root{
-      --ink: #1e3a8a;
-      --link: #2b6cb0;
-      --link-hover: #1e40af;
-      --muted: #555;
-      --line: #ddd;
-      --bg-soft: #f6f6f6;
-      --tile: #f9f9f9;
-      --text: #333;
+    :root {
+      --accent: #f16821;
+      --ink: #2b2b2b;
+      --muted: #737373;
+      --navy: #1f3a63;
+      --maroon: #7a1f2b;
+      --line: #e7e7e7;
+      --bg: #ffffff;
+      --bg-alt: #f7f7f8;
     }
 
-    *{ margin:0; padding:0; box-sizing:border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body{
-      font-family: Georgia, serif;
-      line-height:1.6;
-      color:var(--text);
-      background:#fff;
-      background-color: white !important;
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--ink);
+      line-height: 1.65;
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
     }
 
-    .container{
-      max-width:1200px;
-      margin:0 auto;
-      display:flex;
-      min-height:100vh;
-    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
 
-    .top-nav {
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+    /* ---------- Nav ---------- */
+    header {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 60px;
-      background: #fff;
-      border-bottom: 1px solid var(--line);
+      top: 0; left: 0; right: 0;
       z-index: 100;
+      padding: 18px 0;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+    header.scrolled {
+      background: #1a1a1a;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+      padding: 12px 0;
+    }
+    nav.container {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 28px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    nav ul li a {
+      color: #fff;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    nav ul li a:hover,
+    nav ul li a.active { color: var(--accent); text-decoration: none; }
+
+    .menu-toggle {
+      display: none;
+      background: none; border: none;
+      color: #fff; font-size: 1.6rem; cursor: pointer;
+    }
+
+    @media (max-width: 860px) {
+      nav ul { display: none; width: 100%; flex-direction: column; gap: 0; margin-top: 12px; }
+      nav ul.open { display: flex; }
+      nav ul li { border-top: 1px solid rgba(255,255,255,0.12); }
+      nav ul li a { display: block; padding: 12px 0; }
+      nav.container { flex-wrap: wrap; justify-content: space-between; }
+      header, header.scrolled { background: #1a1a1a; }
+      .menu-toggle { display: block; }
+    }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      min-height: 108vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 0 20px;
-    }
-
-    .top-nav-menu {
-      display: flex;
-      gap: 40px;
-      list-style: none;
-    }
-
-    .top-nav-menu a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 1.05em;
-      padding: 8px 0;
-      border-bottom: 2px solid transparent;
-      transition: all 0.3s;
-      cursor: pointer;
-    }
-
-    .top-nav-menu a:hover {
-      color: var(--ink);
-    }
-
-    .top-nav-menu a.active {
-      color: var(--ink);
-      border-bottom: 2px solid var(--ink);
-    }
-
-    .sidebar{
-      width:280px;
-      background:var(--bg-soft);
-      border-right:1px solid var(--line);
-      padding:30px 20px;
-      position:fixed;
-      height:calc(100vh - 60px);
-      top: 60px;
-      overflow-y:auto;
-    }
-
-    .profile-photo{
-      width:180px; height:180px;
-      border-radius:50%;
-      margin:0 auto 20px;
-      display:block; object-fit:cover;
-      border:3px solid #fff;
-      box-shadow:0 2px 5px rgba(0,0,0,.1);
-    }
-
-    .sidebar h2{
-      font-size:1.3em;
-      color:var(--ink);
-      margin-bottom:10px;
-      text-align:center;
-    }
-
-    .sidebar .subtitle{
-      text-align:center;
-      color:var(--muted);
-      font-size:.95em;
-      margin-bottom:20px;
-      font-style:italic;
-    }
-
-    .contact-info{
-      margin:25px 0;
-      padding-top:20px;
-      border-top:1px solid var(--line);
-    }
-
-    .contact-info p{
-      margin:8px 0;
-      font-size:.9em;
-      color:#555;
-      display:flex; 
-      align-items:center;
-      gap:10px;
-    }
-    
-    .contact-info .icon {
-      width: 18px;
       text-align: center;
-      margin-right: 8px;
-      color: var(--muted);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      background: #07101f;
+      padding: 120px 0 80px;
+    }
+    /* Four-panel banner (2x2): ground station -> Earth orbit -> cislunar -> deep space */
+    .hero .panels {
+      position: absolute; inset: 0; z-index: 0;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+    }
+    .hero .panels span {
+      position: relative;
+      background-color: #0a1526;
+      overflow: hidden;
+    }
+    .hero .panels span img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    /* Dark overlay so the white title stays readable over any images */
+    .hero .overlay {
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(180deg, rgba(6,10,20,0.42), rgba(6,10,20,0.60));
+    }
+    .hero .inner { position: relative; z-index: 2; max-width: 1000px; padding: 0 24px; }
+    .hero::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 60px;
+      z-index: 1;
+      background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.35) 78%, #ffffff 100%);
+      pointer-events: none;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5.5vw, 4rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      line-height: 1.2;
+      letter-spacing: 0.02em;
+    }
+    .hero .accent-rule {
+      width: 72px; height: 4px;
+      background: var(--accent);
+      margin: 28px auto;
+    }
+    .hero h2 {
+      font-weight: 300;
+      font-size: clamp(1.05rem, 2.2vw, 1.5rem);
+      margin-bottom: 8px;
+    }
+    .hero .meta { font-weight: 600; color: var(--accent); font-size: 1.05rem; margin-top: 10px; }
+
+    /* ---------- Sections ---------- */
+    section { padding: 80px 0; }
+    section:nth-of-type(even) { background: var(--bg-alt); }
+
+    .section-head {
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 8px;
+      margin-bottom: 48px;
       display: inline-block;
     }
-
-    .contact-info p a:hover { 
-      color: var(--link-hover) !important; 
-      text-decoration: underline; 
+    .section-head h2 {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 1.9rem;
     }
+    .section-center { text-align: center; }
+    .section-center .section-head { display: inline-block; border-bottom: 2px solid var(--accent); }
 
-    .nav-menu{
-      margin-top:30px;
-      padding-top:20px;
-      border-top:1px solid var(--line);
+    #about p { font-size: 1.05rem; margin-bottom: 18px; text-align: justify; }
+
+    /* ---------- Speakers ---------- */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 52px 32px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
     }
+    @media (max-width: 760px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 460px) { .grid { grid-template-columns: 1fr; } }
 
-    .nav-menu a{
-      display:block;
-      padding:10px 15px;
-      color:var(--link);
-      text-decoration:none;
-      margin:5px 0;
-      border-radius:5px;
-      transition:all .3s;
-      cursor:pointer;
+    .person { text-align: center; }
+    .person img,
+    .person .avatar,
+    .org img,
+    .org .avatar {
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 18px;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #24406e, #0e1b33);
+      color: #fff; font-size: 2.4rem; font-weight: 700;
+      border: 3px solid #fff;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
     }
+    .person h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 4px; }
+    .person p { color: #555; font-size: 0.92rem; }
+    .person .affil-2 { font-size: 0.85rem; }
 
-    .nav-menu a:hover,
-    .nav-menu a.active{
-      background:#e8e8e8;
-      color:var(--link-hover);
+    /* ---------- Program ---------- */
+    .schedule { width: 100%; border-collapse: collapse; }
+    .schedule tr { border-bottom: 1px solid var(--line); }
+    .schedule td { padding: 16px 10px; vertical-align: top; }
+    .schedule td.time {
+      width: 120px; color: #888; font-weight: 500;
+      white-space: nowrap; font-size: 0.85rem;
+      letter-spacing: 0.02em; padding-top: 18px;
     }
+    .schedule .break td { color: #999; font-weight: 500; background: var(--bg-alt); font-size: 0.9rem; }
+    .schedule .lightning td { color: var(--navy); font-weight: 600; font-size: 0.9rem; }
+    .schedule .break td.time, .schedule .lightning td.time { color: #999; }
 
-    .main-content{
-      flex: 1;
-      margin-left: 280px;
-      margin-top: 60px;
-      padding: 40px 70px;
+    .collapsible {
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      border-left: 3px solid var(--accent);
+      padding-left: 16px;
+      margin-left: -2px;
+      transition: background 0.15s ease;
     }
+    .collapsible:hover { background: rgba(241, 104, 33, 0.05); }
+    .collapsible .talk-meta { display: flex; flex-direction: column; gap: 3px; max-width: 60ch; }
+    .collapsible .who {
+      color: var(--ink);
+      font-weight: 700;
+      font-size: 1.08rem;
+      line-height: 1.25;
+    }
+    .collapsible .who .inst { display: block; color: #888; font-weight: 400; font-size: 0.82rem; margin-top: 1px; }
+    .collapsible .talk-title { color: #444; font-weight: 500; font-size: 0.97rem; margin-top: 5px; }
+    .collapsible::after {
+      content: '+';
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 1.15rem;
+      flex-shrink: 0;
+      line-height: 1.2;
+      margin-left: auto;
+      padding-left: 12px;
+    }
+    .collapsible.active::after { content: '\2212'; }
+    .abstract {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.28s ease;
+    }
+    .abstract .inner {
+      padding: 14px 2px 4px 17px;
+      font-size: 0.95rem;
+      color: #444;
+      text-align: justify;
+    }
+    .abstract .inner b { color: var(--ink); }
 
-    .content-section{
-      display:none;
-      max-width: 980px;
+    /* ---------- Lightning / text sections ---------- */
+    .prose { font-size: 1.05rem; color: #333; max-width: 820px; }
+    .prose p { margin-bottom: 16px; text-align: justify; }
+
+    /* ---------- Organizers ---------- */
+    .org-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      max-width: 820px;
       margin: 0 auto;
-      padding-inline: 4px;
-      animation: fadeIn 0.3s ease-in;
     }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .content-section.active{ display:block; }
-
-    h1{
-      color:var(--ink);
-      font-size:2.2em;
-      margin-bottom:30px;
-      padding-bottom:10px;
-      border-bottom:3px double var(--line);
+    @media (max-width: 700px) { .org-grid { grid-template-columns: 1fr; } }
+    .org .role { color: var(--accent); font-size: 0.85rem; font-weight: 600; margin-top: 4px; }
+    .org-contact {
+      text-align: left;
+      margin-top: 0;
+      font-size: 1.05rem;
+      color: #444;
     }
 
-    h2{
-      color:var(--ink);
-      font-size:1.5em;
-      margin:30px 0 20px;
-      padding-bottom:8px;
-      border-bottom:1px solid var(--line);
+    /* ---------- Footer ---------- */
+    footer {
+      background: #1a1a1a;
+      color: #9a9a9a;
+      padding: 48px 0 28px;
+      font-size: 0.95rem;
     }
+    footer a { color: var(--accent); }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 40px;
+      text-align: left;
+      align-items: start;
+    }
+    @media (max-width: 820px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; } }
+    @media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; gap: 24px; } }
+    .footer-grid .foot-h {
+      color: var(--accent);
+      font-size: 0.74rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .footer-grid p { line-height: 1.6; }
+    .foot-base {
+      border-top: 1px solid #2e2e2e;
+      margin-top: 32px;
+      padding-top: 18px;
+      color: #777;
+      font-size: 0.82rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .foot-updated { color: #595959; }
 
-    h3{
-      color:var(--ink);
-      font-size:1.2em;
-      margin:20px 0 15px;
-    }
-
-    p{ margin-bottom:15px; }
-
-    .intro{
-      font-size:1.1em;
-      line-height:1.7;
-      margin-bottom:30px;
-    }
-
-    .research-item{
-      background: var(--tile);
-      padding: 24px 28px;
-      margin: 20px 0;
-      border-left: 4px solid var(--ink);
-      border-radius: 0 5px 5px 0;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    
-    .research-item:hover {
-      transform: translateX(3px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-
-    .research-item img {
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    }
-
-    .pub-list{
-      list-style:none;
-      counter-reset:pub-counter;
-    }
-    .pub-list li{
-      margin:20px 0;
-      padding-left:35px;
-      position:relative;
-      counter-increment:pub-counter;
-    }
-    .pub-list li::before{
-      content:counter(pub-counter) ".";
-      position:absolute;
-      left:0;
-      font-weight:bold;
-      color:var(--ink);
-    }
-
-    .news-list{ list-style:none; }
-    .news-list li{
-      margin:15px 0;
-      padding-left:25px;
-      position:relative;
-    }
-    .news-list li::before{
-      content:"▸";
-      position:absolute; left:0;
-      color:var(--ink); font-weight:bold;
-    }
-    .news-date{ font-weight:bold; color:var(--ink); margin-right:10px; }
-
-    a{ color:var(--link); text-decoration:none; transition:all .3s; }
-    a:hover{ color:var(--link-hover); text-decoration:underline; }
-
-    .cv-download{
-      display:inline-block;
-      padding:12px 30px;
-      background:var(--ink);
-      color:#fff;
-      border-radius:5px;
-      margin:20px 0;
-      transition:background .3s;
-    }
-    .cv-download:hover{ background:#172a63; text-decoration:none; }
-
-    @media (max-width:768px){
-      .container{ flex-direction:column; }
-      .top-nav { 
-        padding: 0 10px; 
-        height: 50px;
-      }
-      .top-nav-menu { 
-        gap: 15px; 
-        font-size: 0.85em; 
-      }
-      .sidebar{
-        width:100%; 
-        position:relative; 
-        height:auto;
-        border-right:none; 
-        border-bottom:1px solid var(--line);
-        top: 0;
-        padding-top: 40px;
-      }
-      .profile-photo{
-        width:150px; 
-        height:150px;
-        margin-top: 10px;
-      }
-      .main-content{ 
-        margin-left:0; 
-        margin-top: 50px;
-        padding:30px 20px; 
-      }
-      
-      body {
-        padding-top: 50px;
-      }
-      
-      .research-item img {
-        max-width: 100% !important;
-        margin: 15px 0;
-      }
-      
-      .research-item {
-        padding: 20px 16px;
-      }
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .abstract { transition: none; }
     }
   </style>
 </head>
+
 <body>
-  <nav class="top-nav">
-    <ul class="top-nav-menu">
-      <li><a onclick="showSection(event,'home')" class="nav-link active">Home</a></li>
-      <li><a onclick="showSection(event,'projects')" class="nav-link">Projects</a></li>
-      <li><a onclick="showSection(event,'publications')" class="nav-link">Publications</a></li>
-      <li><a onclick="showSection(event,'teaching')" class="nav-link">Teaching</a></li>
-      <li><a onclick="showSection(event,'cv')" class="nav-link">CV</a></li>
-    </ul>
-  </nav>
-  
-  <div class="container">
-    <aside class="sidebar">
-      <img src="pdfs/profile-photo.png" alt="Filippos Fotiadis" class="profile-photo" />
-      <h2>Filippos Fotiadis</h2>
-      <p class="subtitle"><b>Postdoctoral Fellow</b><br/>University of Texas at Austin</p>
 
-      <div class="contact-info">
-        <p><i class="fas fa-map-marker-alt icon"></i><span>Austin, TX</span></p>
-        <p><i class="fas fa-envelope icon"></i><a href="mailto:ffotiadis@utexas.edu" style="color:#555;">ffotiadis@utexas.edu</a></p>
-        <p><i class="ai ai-google-scholar icon"></i><a href="https://scholar.google.com/citations?user=ejBYzRAAAAAJ" target="_blank" style="color:#555;">Google Scholar</a></p>
-        <p><i class="fab fa-linkedin icon"></i><a href="https://www.linkedin.com/in/filippos-fotiadis-989249143/" target="_blank" style="color:#555;">LinkedIn</a></p>
-        <p><i class="ai ai-orcid icon"></i><a href="https://orcid.org/0000-0002-9239-3387" target="_blank" style="color:#555;">ORCID</a></p>
-      </div>
+  <header id="site-header">
+    <nav class="container">
+      <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">&#9776;</button>
+      <ul id="menu">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#speakers">Speakers</a></li>
+        <li><a href="#program">Program</a></li>
+        <li><a href="#lightning">Lightning Talks</a></li>
+        <li><a href="#organizers">Organizers</a></li>
+        <li><a href="#registration">Registration</a></li>
+      </ul>
+    </nav>
+  </header>
 
-      <nav class="nav-menu">
-      </nav>
-    </aside>
-
-    <main class="main-content">
-      <section id="home" class="content-section active">
-        <h1>Welcome!</h1>
-
-        <div class="intro">
-          <p>
-            I am a postdoctoral fellow at the Oden Institute for Computational Engineering & Sciences
-            at UT Austin, working with Prof. <a href="https://www.ae.utexas.edu/people/faculty/faculty-directory/topcu">Ufuk Topcu</a>. 
-            I received my Ph.D. in Aerospace Engineering (2024) from Georgia Tech under
-            Prof. <a href="https://kyriakos.ae.gatech.edu/">Kyriakos G. Vamvoudakis</a>.           
-          </p>
-          <p>
-            Aerospace systems are entering a new era. 
-			Autonomous systems will soon decide how aircraft coordinate, how satellites defend against interference, and how missions unfold beyond Earth. 
-			My research focuses on strategic autonomy: aerospace systems that reason about other agents' intentions, manipulate information to preserve mission advantage, and adapt when things go wrong. 
-			I draw on game theory, control theory, and machine learning to build decision-making algorithms for contested and congested environments, from drone fleets to satellite constellations. 
-			The goal is to ensure these systems can coordinate effectively, protect critical information, and keep operating even when communication breaks down or resources run low.</p>
-        </div>
-
-        <h2>Recent News</h2>
-        <ul class="news-list">
-		  <li><span class="news-date">[May 2026]</span> Our paper "Noncooperative Consensus via a Trading-based Auction" is conditionally accepted in IEEE TAC!</li>
-		  <li><span class="news-date">[Dec 2025]</span> Our paper "Deception Against Data-Driven Linear-Quadratic Control" is conditionally accepted in IEEE TAC!</li>
-          <li><span class="news-date">[Nov 2025]</span> Our paper "Input-Output Data-Driven Sensor Selection for Cyber-Physical Systems" is accepted in Automatica!</li>
-          <li><span class="news-date">[Feb 2025]</span> I received the Reviewer of the Year Award from the ASME Journal of Dynamic Systems, Measurement and Control.</li>
-          <li><span class="news-date">[Apr 2024]</span> I was selected as a <a href="https://risingstars.linklab.virginia.edu/2024/index.html">Rising Star in Cyber-Physical Systems</a> for 2024 (20% acceptance rate).</li>
-          <li><span class="news-date">[Jan 2024]</span> I was selected as an Outstanding Reviewer of IEEE Control Systems Letters for 2023 [<a href="pdfs/OutstandingReviewers_LCSS_2023-Fotiadis.pdf">pdf</a>].</li>
-        </ul>
-
-        <h2>Featured Research</h2>
-
-        <div class="research-item">
-          <h3>Adversarial Pursuits in Cislunar Space</h3>
-          <p><strong>Paper:</strong> <a href="https://arxiv.org/pdf/2509.20330" target="_blank">[AIAA SciTech 2026]</a></p>
-          <p><strong>Collaborators:</strong> Quentin Rommel, Gregory Falco, Ufuk Topcu</p>
-          <p>
-            We study pursuit–evasion between two spacecraft in cislunar orbit, formulated as a zero-sum dynamic game in the circular restricted three-body problem.
-			The evader avoids capture by adjusting its orbital phasing and exploiting the orbit's stable and unstable manifolds.
-          </p>
-          <div style="text-align:center; margin:20px 0;">
-            <img src="pdfs/evade.gif" alt="Cislunar pursuit-evasion visualization" style="max-width:95%; height:auto;">
-          </div>
-        </div>
-		
-		<div class="research-item">
-          <h3>Deception Against Data-Driven Linear-Quadratic Control</h3>
-          <p><strong>Paper:</strong> <a href="https://arxiv.org/pdf/2506.11373" target="_blank">[IEEE TAC 2026]</a></p>
-          <p><strong>Collaborators:</strong> Aris Kanellopoulos, Kyriakos G. Vamvoudakis, Ufuk Topcu</p>
-          <p>
-            We consider a setting where an adversary tries to learn the optimal linear-quadratic attack against a system, the dynamics of which it does not know. 
-			On the other end, a defender who knows its dynamics exploits its information advantage and injects a deceptive input into the system to mislead the adversary. 
-			We design the defender's deceptive input stratigically, forcing the adversary to learn, as closely as possible, a pre-selected attack that is different from the optimal one.
-          </p>
-          <div style="text-align:center; margin:20px 0;">
-            <img src="pdfs/Deception.png" alt="Deception" style="max-width:60%; height:auto;">
-          </div>
-        </div>
-
-        <div class="research-item">
-          <h3>Coordinated UAV Beamforming and Control for Directional Jamming and Nulling</h3>
-          <p><strong>Paper:</strong> <a href="https://arxiv.org/pdf/2508.17433" target="_blank">[ACC 2026]</a></p>
-          <p><strong>Collaborators:</strong> Brian M. Sadler, Ufuk Topcu</p>
-          <p>
-            We study the coordinated beamforming and control problem for a UAV equipped with two omnidirectional antennas, which it uses to jam an eavesdropper while leaving a friendly client unaffected.
-            Our formulation jointly optimizes position, antenna orientation, and phase to realize directional jamming, such as selective GPS denial, while minimizing interference to protected receivers.
-          </p>
-          <div style="text-align:center; margin:20px 0;">
-            <img src="pdfs/jam.gif" alt="UAV beamforming pattern visualization" style="max-width:75%; height:auto;">
-          </div>
-        </div>
-
-        <div class="research-item">
-          <h3>Optimal Satellite Maneuvers for Spaceborne Jamming Attacks</h3>
-          <p><strong>Paper:</strong> <a href="https://arxiv.org/pdf/2505.12146" target="_blank">[AIAA SciTech 2026]</a></p>
-          <p><strong>Collaborators:</strong> Quentin Rommel, Brian M. Sadler, Ufuk Topcu</p>
-          <p>
-            We consider a rogue satellite in low Earth orbit that jams the uplink communication between another satellite and a ground station. 
-            To achieve maximal interference with minimal fuel consumption, the jammer carefully maneuvers itself relative to the target satellite's antenna. 
-            We cast this maneuvering objective as a two-stage optimal control problem, involving (i) repositioning to an efficient jamming position before uplink communication commences; and (ii) maintaining an efficient jamming position after communication has started. 
-          </p>
-          <div style="text-align:center; margin:20px 0;">
-            <img src="pdfs/Space_Jamming.png" alt="Satellite jamming trajectory visualization" style="max-width:70%; height:auto;">
-          </div>
-        </div>
-
-        <div class="research-item">
-          <h3>Noncooperative Consensus via a Trading-based Auction</h3>
-          <p><strong>Paper:</strong> <a href="https://arxiv.org/pdf/2502.03616" target="_blank">[IEEE TAC 2026]</a></p>
-          <p><strong>Collaborators:</strong> Jaehan Im, Daniel Delahaye, Ufuk Topcu, David Fridovich-Keil</p>
-          <p>
-            We propose an algorithm named trading auction for consensus (TACo), a decentralized approach that enables noncooperative agents to reach consensus without communicating directly or disclosing private valuations. 
-			TACo facilitates coordination through a structured trading-based auction, where agents iteratively select choices of interest and provably reach an agreement within an a priori bounded number of steps.
-			</p>
-          <div style="text-align:center; margin:20px 0;">
-            <img src="pdfs/Schedule.png" alt="Trading-based auction for noncooperative consensus" style="max-width:60%; height:auto;">
-          </div>
-        </div>
-
-        <p style="text-align:center; margin-top:30px;">
-          <a href="#" onclick="showSection(event,'projects'); return false;" style="font-size:1.1em;">→ View All Projects</a>
-        </p>
-
-      </section>
-
-      <section id="projects" class="content-section">
-        <h1>Projects</h1>
-
-        <h2>Current Projects</h2>
-
-        <div class="research-item">
-          <h3>Adversarial Pursuits in Cislunar Space</h3>
-          <p><strong>Paper:</strong> <a href="https://arxiv.org/pdf/2509.20330" target="_blank">[AIAA SciTech 2026]</a></p>
-          <p><strong>Collaborators:</strong> Quentin Rommel, Gregory Falco, Ufuk Topcu</p>
-          <p>
-            We study pursuit–evasion between two spacecraft in cislunar orbit, formulated as a zero-sum dynamic game in the circular restricted three-body problem. 
-			The evader avoids capture by adjusting its orbital phasing and exploiting the orbit's stable and unstable manifolds.
-          </p>
-          <div style="text-align:center; margin:20px 0;">
-            <img src="pdfs/evade.gif" alt="Cislunar pursuit–evasion visualization" style="max-width:95%; height:auto;">
-          </div>
-        </div>
-		
-		<div class="research-item">
-          <h3>Deception Against Data-Driven Linear-Quadratic Control</h3>
-          <p><strong>Paper:</strong> <a href="https://arxiv.org/pdf/2506.11373" target="_blank">[IEEE TAC 2026]</a></p>
-          <p><strong>Collaborators:</strong> Aris Kanellopoulos, Kyriakos G. Vamvoudakis, Ufuk Topcu</p>
-          <p>
-            We consider a setting where an adversary tries to learn the optimal linear-quadratic attack against a system, the dynamics of which it does not know. 
-			On the other end, a defender who knows its dynamics exploits its information advantage and injects a deceptive input into the system to mislead the adversary. 
-			We design the defender's deceptive input stratigically, forcing the adversary to learn, as closely as possible, a pre-selected attack that is different from the optimal one.
-          </p>
-          <div style="text-align:center; margin:20px 0;">
-            <img src="pdfs/Deception.png" alt="Deception" style="max-width:60%; height:auto;">
-          </div>
-        </div>
-
-        <div class="research-item">
-          <h3>Coordinated UAV Beamforming and Control for Directional Jamming and Nulling</h3>
-          <p><strong>Paper:</strong> <a href="https://arxiv.org/pdf/2508.17433" target="_blank">[ACC 2026]</a></p>
-          <p><strong>Collaborators:</strong> Brian M. Sadler, Ufuk Topcu</p>
-          <p>
-            We study the coordinated beamforming and control problem for a UAV equipped with two omnidirectional antennas, which it uses to jam an eavesdropper while leaving a friendly client unaffected. 
-			Our formulation jointly optimizes position, antenna orientation, and phase to realize directional jamming, such as selective GPS denial, while minimizing interference to protected receivers.
-          </p>
-          <div style="text-align:center; margin:20px 0;">
-            <img src="pdfs/jam.gif" alt="UAV beamforming pattern visualization" style="max-width:75%; height:auto;">
-          </div>
-        </div>
-
-        <div class="research-item">
-          <h3>Optimal Satellite Maneuvers for Spaceborne Jamming Attacks</h3>
-          <p><strong>Paper:</strong> <a href="https://arxiv.org/pdf/2505.12146" target="_blank">[AIAA SciTech 2026]</a></p>
-          <p><strong>Collaborators:</strong> Quentin Rommel, Brian M. Sadler, Ufuk Topcu</p>
-          <p>
-            We consider a rogue satellite in low Earth orbit that jams the uplink communication between another satellite and a ground station.
-			To achieve maximal interference with minimal fuel consumption, the jammer carefully maneuvers itself relative to the target satellite's antenna. 
-			We cast this maneuvering objective as a two-stage optimal control problem, involving i) repositioning to an efficient jamming position before uplink communication commences; and ii) maintaining an efficient jamming position after communication has started.
-          </p>
-          <div style="text-align:center; margin:20px 0;">
-            <img src="pdfs/Space_Jamming.png" alt="Satellite jamming trajectory visualization" style="max-width:70%; height:auto;">
-          </div>
-        </div>
-
-        <div class="research-item">
-          <h3>Noncooperative Consensus via a Trading-based Auction</h3>
-          <p><strong>Paper:</strong> <a href="https://arxiv.org/pdf/2502.03616" target="_blank">[IEEE TAC 2026]</a></p>
-          <p><strong>Collaborators:</strong> Jaehan Im, Daniel Delahaye, Ufuk Topcu, David Fridovich-Keil</p>
-          <p>
-            We propose an algorithm named trading auction for consensus (TACo), a decentralized approach that enables noncooperative agents to reach consensus without communicating directly or disclosing private valuations.
-			TACo facilitates coordination through a structured trading-based auction, where agents iteratively select choices of interest and provably reach an agreement within an a priori bounded number of steps.
-			</p>
-          <div style="text-align:center; margin:20px 0;">
-            <img src="pdfs/Schedule.png" alt="Trading-based auction for noncooperative consensus" style="max-width:60%; height:auto;">
-          </div>
-        </div>
-
-        <div class="research-item">
-          <h3>Approximate Feedback Nash Equilibria with Sparse Inter-Agent Dependencies</h3>
-          <p><strong>Paper:</strong> <a href="https://arxiv.org/pdf/2410.16441" target="_blank">[arXiv 2025]</a></p>
-          <p><strong>Collaborators:</strong> Xinjie Liu, Jingqi Li, Mustafa O. Karabag, Jesse Milzman, David Fridovich-Keil, Ufuk Topcu</p>
-          <p>
-            We propose a regularized dynamic programming approach for finding sparse feedback policies that selectively depend on the states of a subset of agents in dynamic games. 
-			The proposed approach solves convex adaptive group Lasso problems to compute sparse policies approximating Nash equilibrium solutions. We prove the regularized solutions' asymptotic convergence to a neighborhood of Nash equilibrium policies in linear-quadratic (LQ) games. 
-			Further, we extend the proposed approach to general non-LQ games via an iterative algorithm.
-          </p>
-          <div style="text-align:center; margin:20px 0;">
-            <img src="pdfs/Sparse.png" alt="Sparse feedback Nash via regularized dynamic programming" style="max-width:100%; height:auto;">
-          </div>
-        </div>
-
-        
-
-        <div class="research-item">
-          <h3>Adversarial Observability and Performance Tradeoffs in Optimal Control</h3>
-          <p><strong>Paper:</strong> <a href="https://arxiv.org/pdf/2506.19829" target="_blank">[arXiv 2025]</a></p>
-          <p><strong>Collaborators:</strong> Ufuk Topcu</p>
-          <p>
-            We develop a feedback controller that minimizes the observability of adversarial sensors in a linear system while satisfying strict closed-loop performance constraints.
-			We measure sensor effectiveness using the trace of the observability Gramian and its inverse, capturing both average and least observable state directions. 
-			We establish theoretical lower bounds on these metrics under performance constraints and optimize them using semidefinite programming.
-          </p>
-          <div style="text-align:center; margin:25px 0;">
-            <p style="font-style:italic; color:#666; margin-bottom:10px;">
-              Adversary's observer error using the nominal optimal controller.
-            </p>
-            <img src="pdfs/nothing.png" 
-                 alt="Observer error with optimal controller" 
-                 style="max-width:80%; height:auto; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.1); margin-bottom:25px;">
-            <p style="font-style:italic; color:#666; margin-bottom:10px;">
-              Adversary's observer error using the proposed low-observability controller.
-            </p>
-            <img src="pdfs/trinv.png" 
-                 alt="Observer error with proposed controller" 
-                 style="max-width:80%; height:auto; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
-          </div>
-        </div>
-
-        <h2 style="margin-top: 100px;">Prior Projects</h2>
-
-        <div class="research-item">
-          <h3>Input-Output Data-Driven Sensor Selection for Cyber-Physical Systems</h3>
-          <p><strong>Paper:</strong> <a href="https://www.sciencedirect.com/science/article/pii/S0005109826000130" target="_blank">[Automatica 2026]</a></p>
-          <p><strong>Collaborators:</strong> Kyriakos G. Vamvoudakis</p>
-          <p>
-            We propose the first model-free sensor selection framework for unknown cyber-physical systems (CPS). 
-			Given a large pool of available sensors, our goal is to select a subset that maximizes the system's observability. 
-			Unlike existing methods that rely on explicit system models, our approach performs this optimization directly from input–output data, without prior knowledge of the system dynamics.
-          </p>
-        </div>
-
-        <div class="research-item">
-          <h3>A Physics-Informed Learning Framework to Solve the Infinite-Horizon Optimal Control Problem</h3>
-          <p><strong>Paper:</strong> <a href="https://onlinelibrary.wiley.com/doi/10.1002/rnc.70028" target="_blank">[Int. J. Robust & Nonlinear Control 2025]</a></p>
-          <p><strong>Collaborators:</strong> Kyriakos G. Vamvoudakis</p>
-          <p>
-            We propose a physics-informed neural network (PINN) framework to solve the infinite-horizon optimal control problem for nonlinear systems. 
-			To address the challenge of multiple solutions in the corresponding steady-state Hamilton–Jacobi–Bellman (HJB) equation, we instead apply PINNs to a finite-horizon variant of the HJB equation that admits a unique solution, which uniformly approximates the optimal value function as the horizon length increases.
-          </p>
-        </div>
-
-        <div class="research-item">
-          <h3>On the Effect of Clock Offsets and Quantization on Learning-Based Adversarial Games</h3>
-          <p><strong>Paper:</strong> <a href="https://www.sciencedirect.com/science/article/pii/S0005109824002565" target="_blank">[Automatica 2024]</a></p>
-          <p><strong>Collaborators:</strong> Aris Kanellopoulos, Kyriakos G. Vamvoudakis, Jerome Hugues</p>
-          <p>
-            We consider an off-policy iterative reinforcement learning (RL) algorithm for continuous-time systems, which uses input–state data to approximate the Nash equilibrium of a zero-sum game. 
-			However, the data employed by this algorithm are temporally inconsistent, as each sample originates from a slightly different past time instant. 
-			We prove that, under a Lipschitz continuity assumption and provided that these timing inconsistencies remain below a prescribed threshold, the off-policy iterative RL algorithm still converges epsilon-closely to the desired Nash policy.
-          </p>
-        </div>
-
-        <div class="research-item">
-          <h3>Input-Constrained Prescribed Performance Control for High-Order MIMO Uncertain Nonlinear Systems</h3>
-          <p><strong>Paper:</strong> <a href="https://ieeexplore.ieee.org/abstract/document/10273607/" target="_blank">[IEEE TAC 2024]</a></p>
-          <p><strong>Collaborators:</strong> George A. Rovithakis</p>
-          <p>
-            We develop an approximation-free prescribed-performance controller for uncertain nonlinear systems that remains stable under strict actuator saturation.
-			The controller dynamically relaxes and restores the reference to prevent internal instability and ensure bounded closed-loop signals. 
-			We also quantify the resulting performance distortion, providing explicit guarantees on tracking accuracy under input constraints.
-          </p>
-        </div>
-
-        <div class="research-item">
-          <h3>Data-Driven Actuator Allocation for Actuator-Redundant Systems</h3>
-          <p><strong>Paper:</strong> <a href="https://ieeexplore.ieee.org/document/10302316" target="_blank">[IEEE TAC 2024]</a></p>
-          <p><strong>Collaborators:</strong> Kyriakos G. Vamvoudakis, Zhong-Ping Jiang</p>
-          <p>
-            We consider the problem of optimally augmenting an actuator redundant system with additional actuators, so that the energy required to meet a given control objective is minimized.
-            We study two cases: one where the control objective is unknown, and another where it is defined by a linear state-feedback law.
-            In the latter case, we relax the need for explicit system models by using trajectory data to iteratively approximate the antistabilizing solution of an associated algebraic Riccati equation.
-          </p>
-        </div>
-
-        <div class="research-item">
-          <h3>Learning-Based Actuator Selection for Increased Attack Resilience of Uncertain Systems</h3>
-          <p><strong>Paper:</strong> <a href="https://www.sciencedirect.com/science/article/pii/S0005109823004983" target="_blank">[Automatica 2024]</a></p>
-          <p><strong>Collaborators:</strong> Kyriakos G. Vamvoudakis</p>
-          <p>
-            We consider a security-aware and learning-based actuator selection formulation for cyber-physical systems. 
-            A set of actuators is chosen to be used by the system so that a metric of controllability and actuation attack resilience is maximized, given only partial knowledge of the physics of the system.
-          </p>
-        </div>
-
-        <div class="research-item">
-          <h3>Recursive Reasoning with Reduced Complexity and Intermittency for Non-Equilibrium Learning in Stochastic Games</h3>
-          <p><strong>Paper:</strong> <a href="https://ieeexplore.ieee.org/document/9722569" target="_blank">[IEEE TNNLS 2023]</a></p>
-          <p><strong>Collaborators:</strong> Kyriakos G. Vamvoudakis</p>
-          <p>
-            We develop a computationally and communicationally efficient framework for decision-making in nonequilibrium stochastic games.
-            By modeling agents with bounded rationality through level-k and cognitive-hierarchy reasoning, we capture more realistic behaviors than standard Nash equilibria.
-            We introduce recursive and parallel algorithms that compute these boundedly rational strategies efficiently.
-          </p>
-        </div>
-
-        <div class="research-item">
-          <h3>Concurrent Receding Horizon Control and Estimation Against Stealthy Attacks</h3>
-          <p><strong>Paper:</strong> <a href="https://ieeexplore.ieee.org/document/9847377" target="_blank">[IEEE TAC 2023]</a></p>
-          <p><strong>Collaborators:</strong> Kyriakos G. Vamvoudakis</p>
-          <p>
-            We present a game-theoretic framework for cyber-physical systems in which a defender mitigates attacks from an intelligent adversary that exploits system uncertainty to remain undetected.
-            The defender jointly performs receding-horizon control and estimation, optimizing a robust performance cost that accounts for stealthy attacks.
-            Theoretical analysis guarantees closed-loop boundedness despite the defender's information disadvantage, and simulations corroborate these results.
-          </p>
-        </div>
-
-        <div class="research-item">
-          <h3>Nonequilibrium Dynamical Games: A Control Systems Perspective</h3>
-          <p><strong>Paper:</strong> <a href="https://www.sciencedirect.com/science/article/abs/pii/S1367578822000128" target="_blank">[Annual Reviews in Control 2022]</a></p>
-          <p><strong>Collaborators:</strong> Kyriakos G. Vamvoudakis, Aris Kanellopoulos, Nick-Marios T. Kokolakis</p>
-          <p>
-            Dynamical games model strategic interactions between agents in changing environments, which is increasingly important as autonomous systems become more prevalent in society. 
-            This work applies bounded rationality concepts from economics—specifically level-k thinking and cognitive hierarchy—to predict nonequilibrium solutions in differential games using control theory frameworks. 
-            The approach is demonstrated through UAV pursuit-evasion scenarios and extended to stochastic games, providing rigorous mathematical guarantees for predicting game outcomes in both competitive and cooperative settings.
-          </p>
-        </div>
-
-        <div class="research-item">
-          <h3>Prescribed Performance Control for Discontinuous Output Reference Tracking</h3>
-          <p><strong>Paper:</strong> <a href="https://ieeexplore.ieee.org/abstract/document/9301419/" target="_blank">[IEEE TAC 2021]</a></p>
-          <p><strong>Collaborators:</strong> George A. Rovithakis</p>
-          <p>
-            This article presents a low-complexity prescribed performance tracking controller for uncertain multi-input multi-output nonlinear systems that guarantees tracking errors converge within fixed time with predefined maximum overshoot, even with discontinuous reference signals.
-            The approach modifies standard prescribed performance control by incorporating impulsive dynamics, eliminating the need to predict future reference values or discontinuity timings.
-          </p>
-        </div>
-
-        <div class="research-item">
-          <h3>Detection of Actuator Faults for Continuous-Time Systems with Intermittent State Feedback</h3>
-          <p><strong>Paper:</strong> <a href="https://www.sciencedirect.com/science/article/abs/pii/S0167691121000682" target="_blank">[Systems & Control Letters 2021]</a></p>
-          <p><strong>Collaborators:</strong> Kyriakos G. Vamvoudakis</p>
-          <p>
-            We present a fault detection method for uncertain continuous-time systems with intermittent state measurements, identifying actuator faults that create state evolutions incompatible with the system model. 
-            A necessary and sufficient detection condition is derived and relaxed for computational efficiency through a boundary-value problem formulation.
-          </p>
-        </div>
-
-      </section>
-
-      <section id="publications" class="content-section">
-        <h1>Publications</h1>
-
-        <h2>Books</h2>
-        <ol class="pub-list">
-          <li>A. Kanellopoulos, L. Zhai, <b>F. Fotiadis</b>, K. G. Vamvoudakis, "Control and Game Theoretic Methods for Cyber-Physical Security," <i>Elsevier</i>, 2024.
-            <div style="margin-top: 15px;">
-              <img src="pdfs/book_cover.jpg" alt="Control and Game Theoretic Methods for Cyber-Physical Security Book Cover" style="max-width: 200px; height: auto; box-shadow: 0 3px 10px rgba(0,0,0,0.2); border-radius: 4px;">
-            </div>
-          </li>
-        </ol>
-
-        <h2>Journal Papers</h2>
-        <ol class="pub-list">
-		  <li>T. Qiu, <b>F. Fotiadis</b>, X. Liu, C. Ellis, J. Milzman, W. Suttle, U. Topcu, D. Fridovich-Keil, "Linear-Quadratic Gaussian Games with Distributed Sparse Estimation," submitted.</li>
-          <li>S. Niu, A. Bouland, H. Wang, <b>F. Fotiadis</b>, A. Kurdila, A. L'Afflitto, S. T. Paruchuri, K. G. Vamvoudakis, "Tailoring Reproducing Kernels for Optimal Control via Policy Iteration," submitted.</li>
-          <li>X. Liu, J. Li, <b>F. Fotiadis</b>, M. O. Karabag, J. Milzman, D. Fridovich-Keil, U. Topcu, "Approximate Feedback Nash Equilibria with Sparse Inter-Agent Dependencies," submitted.</li>
-          <li><b>F. Fotiadis</b>, U. Topcu, "Adversarial Observability and Performance Trade-offs in Optimal Control," submitted.</li>
-          <li>N. Tukenmez, <b>F. Fotiadis</b>, J. M. Magalhães Júnior, K. G. Vamvoudakis, S. Bogosyan, "Intermittent Learning for Trajectory Tracking Control with an Experimental Validation on Microdrones," submitted.</li>
-		  <li>J. Im, <b>F. Fotiadis</b>, D. Delahaye, U. Topcu, D. Fridovich-Keil, "Noncooperative Consensus via a Trading-based Auction," conditionally accepted in <i>IEEE Transactions on Automatic Control</i>, 2026.</li>
-		  <li><b>F. Fotiadis</b>, A. Kanellopoulos, K. G. Vamvoudakis, U. Topcu, "Deception Against Data-Driven Linear-Quadratic Control," conditionally accepted in <i>IEEE Transactions on Automatic Control</i>, 2026.</li>
-		  <li><b>F. Fotiadis</b>, K. G. Vamvoudakis, "<a href="https://www.sciencedirect.com/science/article/pii/S0005109826000130">Input-Output Data-Driven Sensor Selection for Cyber-Physical Systems</a>," <i>Automatica</i>, vol. 186, paper 112829, 2026.</li>
-          <li><b>F. Fotiadis</b>, K. G. Vamvoudakis, "<a href="https://onlinelibrary.wiley.com/doi/full/10.1002/rnc.70028">A Physics-Informed Learning Framework to Solve the Infinite-Horizon Optimal Control Problem</a>," <i>International Journal of Robust and Nonlinear Control</i>, vol. 35, no. 16, pp. 6932-6944, 2025.</li>
-          <li>S. Niu, A. Bouland, H. Wang, <b>F. Fotiadis</b>, A. Kurdila, A. L'Afflitto, S. T. Paruchuri, K. G. Vamvoudakis, "<a href="https://ieeexplore.ieee.org/document/10566857/">Convergence Rates of Online Critic Value Function Approximation in Native Spaces</a>," <i>IEEE Control Systems Letters</i>, vol. 8, pp. 2145-2150, 2024.</li>
-          <li><b>F. Fotiadis</b>, A. Kanellopoulos, K. G. Vamvoudakis, J. Hugues, "<a href="https://www.sciencedirect.com/science/article/pii/S0005109824002565">On the Effect of Clock Offsets and Quantization on Learning-based Adversarial Games</a>," <i>Automatica</i>, vol. 167, paper 111762, 2024.</li>
-          <li><b>F. Fotiadis</b>, G. A. Rovithakis, "<a href="https://ieeexplore.ieee.org/abstract/document/10273607/">Input-Constrained Prescribed Performance Control for High-order MIMO Uncertain Nonlinear Systems</a>," <i>IEEE Transactions on Automatic Control</i>, vol. 69, no. 5, pp. 3301-3308, 2024.</li>
-          <li><b>F. Fotiadis</b>, K. G. Vamvoudakis, Z.-P. Jiang, "<a href="https://ieeexplore.ieee.org/document/10302316">Data-Driven Actuator Allocation for Actuator Redundant Systems</a>," <i>IEEE Transactions on Automatic Control</i>, vol. 69, no. 4, pp. 2249-2264, 2024.</li>
-          <li><b>F. Fotiadis</b>, K. G. Vamvoudakis, "<a href="https://www.sciencedirect.com/science/article/pii/S0005109823004983">Learning-based Actuator Selection for Increased Attack Resilience of Uncertain Systems</a>," <i>Automatica</i>, vol. 159, paper 111332, 2024.</li>
-          <li><b>F. Fotiadis</b>, K. G. Vamvoudakis, "<a href="https://ieeexplore.ieee.org/document/9722569">Recursive Reasoning with Reduced Complexity and Intermittency for Non-Equilibrium Learning in Stochastic Games</a>," <i>IEEE Transactions on Neural Networks and Learning Systems</i>, vol. 34, no. 11, pp. 8467-8481, 2023.</li>
-          <li><b>F. Fotiadis</b>, K. G. Vamvoudakis, "<a href="https://ieeexplore.ieee.org/document/9847377">Concurrent Receding Horizon Control and Estimation against Stealthy Attacks</a>," <i>IEEE Transactions on Automatic Control</i>, vol. 68, no. 6, pp. 3712-3719, 2023.</li>
-          <li>K. G. Vamvoudakis, <b>F. Fotiadis</b>, A. Kanellopoulos, N.-M. T. Kokolakis, "<a href="https://doi.org/10.1016/j.arcontrol.2022.03.006">Nonequilibrium Dynamical Games: A Control Systems Perspective</a>," <i>Annual Reviews in Control</i>, vol. 53, pp. 6-18, 2022.</li>
-          <li><b>F. Fotiadis</b>, G. A. Rovithakis, "<a href="https://ieeexplore.ieee.org/abstract/document/9301419/">Prescribed Performance Control for Discontinuous Output Reference Tracking</a>," <i>IEEE Transactions on Automatic Control</i>, vol. 66, no. 9, pp. 4409-4416, 2021.</li>
-          <li><b>F. Fotiadis</b>, K. G. Vamvoudakis, "<a href="https://doi.org/10.1016/j.sysconle.2021.104938">Detection of Actuator Faults for Continuous-Time Systems with Intermittent State Feedback</a>," <i>Systems & Control Letters</i>, vol. 152, paper 104938, 2021.</li>
-        </ol>
-
-        <h2>Conference Papers</h2>
-        <ol class="pub-list"> 
-		  <li>A. Zongo, <b>F. Fotiadis</b>, U. Topcu, P. Wei, "Robust Multi-Agent Reinforcement Learning for Small UAS Separation Assurance under GPS Degradation and Spoofing," submitted.</li>
-          <li>G. Cooper, N. Tsao, <b>F. Fotiadis</b>, U. Topcu, R. Marculescu, "Learning from Sparse and Asynchronous Data Streams for Batteryless Sensors," submitted.</li>
-		  <li>J. Webb, B. Bjorkman, A. Diaz Gonzalez, A. Coursey, N. Dahle, K. Lemieux Mack, <b>F. Fotiadis</b>, G. Biswas, B. C. Ward, A. Taye, "Remote ID Spoofing-Aware Trajectory Planning for Small Unmanned Aerial Systems," to appear in <i>AIAA/IEEE Digital Avionics Systems Conference</i>, Orlando, FL, 2026.</li>
-		  <li><b>F. Fotiadis</b>, B. M. Sadler, U. Topcu, "Coordinated UAV Beamforming and Control for Directional Jamming and Nulling," to appear in <i>American Control Conference</i>, New Orleans, LA, 2026.</li>
-          <li><b>F. Fotiadis</b>, Q. Rommel, G. Falco, U. Topcu, "<a href="https://arc.aiaa.org/doi/abs/10.2514/6.2026-2495">Adversarial Pursuits in Cislunar Space</a>," <i>Proc. AIAA SciTech Forum</i>, Orlando, FL, 2026.</li>
-          <li><b>F. Fotiadis</b>, Q. Rommel, B. M. Sadler, U. Topcu, "<a href="https://arc.aiaa.org/doi/abs/10.2514/6.2026-2539">Optimal Satellite Maneuvers for Spaceborne Jamming Attacks</a>," <i>Proc. AIAA SciTech Forum</i>, Orlando, FL, 2026.</li>
-          <li>I. Sharifi, M. Ghazanfari, A. Taye, P. Wei, M. H. Ahmed, H. T. Kim, M. Ghasemi, V. Gupta, N. Dahle, R. Canady, A. D. Gonzalez, A. Coursey, B. Bjorkman, C. L. Mack, B. C. Ward, X. Koutsoukos, G. Biswas, S. Hasan, I. Amundson, <b>F. Fotiadis</b>, U. Topcu, J. Lu, Q. A. Chen, N. Aryal, A. Ibrahim, K. Ras, A. Shirkhodaie, "<a href="https://arc.aiaa.org/doi/abs/10.2514/6.2026-2892">A Survey of Security Challenges and Solutions for UAS Traffic Management (UTM) and Small Unmanned Aerial Systems (sUAS)</a>," <i>Proc. AIAA SciTech Forum</i>, Orlando, FL, 2026.</li>
-          <li>M. Ghazanfari, I. Sharifi, A. Taye, P. Wei, B. C. Ward, X. Koutsoukos, G. Biswas, N. Dahle, R. Canady, A. D. Gonzalez, A. Coursey, B. Bjorkman, C. L. Mack, M. Ghasemi, M. H. Ahmed, H. T. Kim, V. Gupta, <b>F. Fotiadis</b>, U. Topcu, A. Chen, J. Lu, A. Shirkhodaie, N. Aryal, A. Ibrahim, K. Ras, S. Hasan, I. Amundson, "<a href="https://arc.aiaa.org/doi/abs/10.2514/6.2026-2891">A Survey of Security Challenges and Solutions for Advanced Air Mobility and eVTOL Aircraft</a>," <i>Proc. AIAA SciTech Forum</i>, Orlando, FL, 2026.</li>
-          <li>N. Tukenmez, J. Magalhães, <b>F. Fotiadis</b>, K. G. Vamvoudakis, A. Homaifar, "<a href="https://arc.aiaa.org/doi/abs/10.2514/6.2026-1769">A Comprehensive Review of Trajectory Planning in Swarm Drones: Methods, Challenges, and Future Directions</a>,"  <i>Proc. AIAA SciTech Forum</i>, Orlando, FL, 2026.</li>
-          <li>K. G. Vamvoudakis, <b>F. Fotiadis</b>, T. Başar, V. Gupta, J. Poveda, M. Tang, M. Krstic, Q. Zhu, "<a href="https://ieeexplore.ieee.org/abstract/document/11107786">Deception in Game Theory and Control: A Tutorial</a>," <i>Proc. American Control Conference</i>, pp. 2146-2163, Denver, CO, 2025.</li>
-          <li>X. Liu, J. Li, <b>F. Fotiadis</b>, M. O. Karabag, J. Milzman, D. Fridovich-Keil, U. Topcu, "<a href="https://ifaamas.csc.liv.ac.uk/Proceedings/aamas2025/pdfs/p2633.pdf">Policies with Sparse Inter-Agent Dependencies in Dynamic Games: A Dynamic Programming Approach</a>," <i>Proc. 24th International Conference on Autonomous Agents and Multiagent Systems</i>, pp. 2633-2635, Detroit, MI, 2025.</li>
-          <li><b>F. Fotiadis</b>, K. G. Vamvoudakis, "<a href="https://ieeexplore.ieee.org/abstract/document/10886647">Input-Output Data-Driven Sensor Selection</a>," <i>Proc. IEEE Conference on Decision and Control</i>, pp. 4506-4511, Milan, Italy, 2024.</li>
-          <li><b>F. Fotiadis</b>, G. A. Rovithakis, K. G. Vamvoudakis, "<a href="https://ieeexplore.ieee.org/abstract/document/10885951">Embedding Learning-based Optimal Controllers with Assured Safety</a>," <i>Proc. IEEE Conference on Decision and Control</i>, pp. 5266-5273, Milan, Italy, 2024.</li>
-          <li>A. Kanellopoulos, <b>F. Fotiadis</b>, K. G. Vamvoudakis, H. Sandberg, "<a href="https://ieeexplore.ieee.org/abstract/document/10885960">Unpredictable Switching for Cyber-Physical Security Against Worst-case Attackers</a>," <i>Proc. IEEE Conference on Decision and Control</i>, pp. 2361-2366, Milan, Italy, 2024.</li>
-          <li>N. Tukenmez, <b>F. Fotiadis</b>, J. M. Magalhães Júnior, K. G. Vamvoudakis, S. Bogosyan, "<a href="https://ieeexplore.ieee.org/abstract/document/10885986">Reward Drops in Learning-based Control with an Experimental Validation on Microdrones</a>," <i>Proc. IEEE Conference on Decision and Control</i>, pp. 3819-3824, Milan, Italy, 2024.</li>
-          <li><b>F. Fotiadis</b>, A. Kanellopoulos, K. G. Vamvoudakis, J. Hugues, "<a href="https://ieeexplore.ieee.org/document/10644755">Poisoning Actuation Attacks against the Learning of an Optimal Controller</a>," <i>Proc. American Control Conference</i>, pp. 4823-4828, Toronto, Canada, 2024.</li>
-          <li>S. Athalye, <b>F. Fotiadis</b>, K. G. Vamvoudakis, J. Hugues, "<a href="https://ieeexplore.ieee.org/document/10644369">An Output Feedback Game-Theoretic Approach for Defense against Stealthy GNSS Spoofing Attacks</a>," <i>Proc. American Control Conference</i>, pp. 3689-3694, Toronto, Canada, 2024.</li>
-          <li>J. M. Magalhães Júnior, L. Zhai, <b>F. Fotiadis</b>, A. Kanellopoulos, K. G. Vamvoudakis, J. Hugues, "<a href="https://arc.aiaa.org/doi/abs/10.2514/6.2024-0343/">Real-Time and Experimental Reactive and Proactive Defense in a Multi-Agent Scenario</a>," <i>Proc. AIAA SciTech Forum</i>, Orlando, FL, 2024.</li>
-          <li><b>F. Fotiadis</b>, K. G. Vamvoudakis, "<a href="https://ieeexplore.ieee.org/document/10383404/">A Physics-Informed Neural Networks Framework to Solve the Infinite-Horizon Optimal Control Problem</a>," <i>Proc. IEEE Conference on Decision and Control</i>, pp. 6008-6013, Marina Bay Sands, Singapore, 2023.</li>
-          <li><b>F. Fotiadis</b>, K. G. Vamvoudakis, "<a href="https://ieeexplore.ieee.org/document/10383984/">Game-Theoretic Deception Methods for Perfectly and Bounded Rational Stealthy Attackers</a>," <i>Proc. IEEE Conference on Decision and Control</i>, pp. 7956-7963, Marina Bay Sands, Singapore, 2023.</li>
-          <li><b>F. Fotiadis</b>, G. A. Rovithakis, "<a href="https://ieeexplore.ieee.org/abstract/document/10185809/">Input-Constrained Prescribed Performance Control for SISO Nonlinear Systems via Reference Relaxation</a>," <i>Proc. Mediterranean Conference on Control and Automation</i>, pp. 777-782, Limassol, Cyprus, 2023.</li>
-          <li>K. G. Vamvoudakis, <b>F. Fotiadis</b>, J. P. Hespanha, R. Chinchilla, G. Yang, M. Liu, J. S. Shamma, L. Pavel, "<a href="https://ieeexplore.ieee.org/document/10156432">Game Theory for Autonomy: From Min-Max Optimization to Equilibrium and Bounded Rationality Learning</a>," <i>Proc. American Control Conference</i>, pp. 4363-4380, San Diego, CA, 2023.</li>
-          <li>L. Zhai, <b>F. Fotiadis</b>, K. G. Vamvoudakis, J. Hugues, "<a href="https://ieeexplore.ieee.org/document/10155865">Timing-Aware Resilience of Data-driven Off-policy Reinforcement Learning for Discrete-Time Systems</a>," <i>Proc. American Control Conference</i>, pp. 2782-2787, San Diego, CA, 2023.</li>
-          <li>L. Zhai, A. Kanellopoulos, <b>F. Fotiadis</b>, K. G. Vamvoudakis, J. Hugues, "<a href="https://arc.aiaa.org/doi/10.2514/6.2023-0131">A Modular Approach to Verification of Learning Components in Cyber-Physical Systems</a>," <i>Proc. AIAA SciTech</i>, National Harbor, MD, 2023.</li>
-          <li><b>F. Fotiadis</b>, K. G. Vamvoudakis, Z.-P. Jiang, "<a href="https://ieeexplore.ieee.org/document/9992848">Data-Based Actuator Selection for Optimal Control Allocation</a>," <i>Proc. IEEE Conference on Decision and Control</i>, pp. 4674-4679, Cancun, Mexico, 2022.</li>
-          <li><b>F. Fotiadis</b>, A. Kanellopoulos, K. G. Vamvoudakis, J. Hugues, "<a href="https://ieeexplore.ieee.org/document/9867823">Impact of Sensor and Actuator Clock Offsets on Reinforcement Learning</a>," <i>Proc. American Control Conference</i>, pp. 2669-2674, Atlanta, GA, 2022.</li>
-          <li>L. Zhai, A. Kanellopoulos, <b>F. Fotiadis</b>, K. G. Vamvoudakis, J. Hugues, "<a href="https://arc.aiaa.org/doi/10.2514/6.2022-0969">Towards Intelligent Security for Unmanned Aerial Vehicles: A Taxonomy of Attacks, Faults, and Detection Mechanisms</a>," <i>Proc. AIAA SciTech Forum</i>, 2022.</li>
-          <li><b>F. Fotiadis</b>, K. G. Vamvoudakis, "<a href="https://ieeexplore.ieee.org/document/9683690/">Learning-based Actuator Placement for Uncertain Systems</a>," <i>Proc. IEEE Conference on Decision and Control</i>, pp. 90-95, Austin, TX, 2021.</li>
-          <li><b>F. Fotiadis</b>, C. Verginis, K. G. Vamvoudakis, U. Topcu, "<a href="https://ieeexplore.ieee.org/document/9683417/">Assured Learning-based Optimal Control subject to Timed Temporal Logic Constraints</a>," <i>Proc. IEEE Conference on Decision and Control</i>, pp. 750-756, Austin, TX, 2021.</li>
-          <li>A. Kanellopoulos, <b>F. Fotiadis</b>, C. Sun, Z. Xu, K. G. Vamvoudakis, U. Topcu, W. E. Dixon, "<a href="https://ieeexplore.ieee.org/document/9683309/">Temporal Logic-based Intermittent, Optimal, and Safe Continuous-Time Learning for Trajectory Tracking</a>," <i>Proc. IEEE Conference on Decision and Control</i>, pp. 1263-1268, Austin, TX, 2021.</li>
-          <li><b>F. Fotiadis</b>, K. G. Vamvoudakis, "<a href="https://ieeexplore.ieee.org/document/9658965/">Recursive Reasoning for Bounded Rationality in Multi-Agent Non-Equilibrium Play Learning Systems</a>," <i>Proc. IEEE Conference on Control Technology and Applications</i>, pp. 741-746, San Diego, CA, 2021.</li>
-          <li>A. Kanellopoulos, <b>F. Fotiadis</b>, K. G. Vamvoudakis, V. Gupta, "<a href="https://ieeexplore.ieee.org/document/9303995">A Meta-Learning and Bounded Rationality Framework for Repeated Games in Adversarial Environments</a>," <i>Proc. IEEE Conference on Decision and Control</i>, pp. 1640-1645, Jeju Island, Republic of Korea, 2020.</li>
-          <li><b>F. Fotiadis</b>, A. Kanellopoulos, K. G. Vamvoudakis, "<a href="https://ieeexplore.ieee.org/document/9147555">Constrained Differential Games for Secure Decision-Making against Stealthy Attacks</a>," <i>Proc. American Control Conference</i>, pp. 4658-4663, Denver, CO, 2020.</li>
-          <li>F. Dimeas, <b>F. Fotiadis</b>, D. Papageorgiou, A. Sidiropoulos, Z. Doulgeri, "<a href="https://link.springer.com/chapter/10.1007/978-3-319-89327-3_12">Towards Progressive Automation of Repetitive Tasks Through Physical Human-Robot Interaction</a>," Human Friendly Robotics: 10th International Workshop, pp. 151-163, 2019.</li>
-        </ol>
-      </section>
-
-      <section id="teaching" class="content-section">
-        <h1>Teaching</h1>
-
-        <h2>Instructor</h2>
-        <div class="research-item">
-          <h3>AE8750/8751: Robotics Research Fundamentals</h3>
-          <p><strong>Spring 2023</strong> – Georgia Institute of Technology</p>
-          <p>Instructed full-load graduate-level course covering the fundamentals of research in robotics, including literature review, experimental design, and technical communication.</p>
-        </div>
-
-        <h2>Guest Lecturer</h2>
-        <div class="research-item">
-          <h3>AE8803: Optimization-Based Learning Control and Games</h3>
-          <p><strong>Fall 2022, Fall 2023</strong> – Georgia Institute of Technology</p>
-          <p>Delivered guest lectures and assisted with an advanced graduate course on optimization, learning, and game theory in control systems.</p>
-        </div>
-      </section>
-
-      <section id="cv" class="content-section">
-        <h1>Curriculum Vitae</h1>
-        <a href="pdfs/CV_web.pdf" class="cv-download" target="_blank">Download Full CV (PDF)</a>
-
-        <h2>Education</h2>
-        <ul>
-          <li><b>Ph.D. in Aerospace Engineering</b>, Georgia Institute of Technology, 2024<br/>
-              <i>Advisor: Prof. Kyriakos G. Vamvoudakis</i></li>
-          <li><b>M.S. in Mathematics</b>, Georgia Institute of Technology, 2023</li>
-          <li><b>M.S. in Aerospace Engineering</b>, Georgia Institute of Technology, 2022</li>
-          <li><b>Diploma in Electrical & Computer Engineering</b>, Aristotle University of Thessaloniki, 2018<br/>
-              <i>Advisor: Prof. George A. Rovithakis</i></li>
-        </ul>
-
-        <h2>Professional Experience</h2>
-        <ul>
-          <li><b>Postdoctoral Fellow</b>, University of Texas at Austin (August 2024 - Present)<br/>
-              <i>Autonomous Systems Group, PI: Prof. Ufuk Topcu</i></li>
-          <li><b>Graduate Research Assistant</b>, Georgia Institute of Technology (August 2019 - August 2024)<br/>
-              <i>Intelligent Cyber-Physical Systems Lab, PI: Prof. Kyriakos G. Vamvoudakis</i></li>
-        </ul>
-
-        <h2>Awards & Honors</h2>
-        <ul>
-          <li>Reviewer of the Year Award, ASME Journal of Dynamic Systems, Measurement, and Control (2024)</li>
-          <li>Cyber-Physical Systems Rising Star, National Science Foundation (2024) – 20% acceptance rate [<a href="https://risingstars.linklab.virginia.edu/2024/index.html">link</a>]</li>
-          <li>Georgia Tech Aerospace Engineering Fellowship (2023-2024)</li>
-          <li>Alexander S. Onassis Foundation Scholarship (2020-2024)</li>
-          <li>Outstanding Reviewer Award (top 1%), IEEE Control Systems Letters (2023) [<a href="pdfs/OutstandingReviewers_LCSS_2023-Fotiadis.pdf">pdf</a>]</li>
-          <li>Excellent Reviewer Award, Journal of Guidance, Control, and Dynamics (2022)</li>
-        </ul>
-
-        <h2>Service</h2>
-        <ul>
-          <li><b>Tutorial Co-Organizer:</b> "Deception in Game Theory and Control," American Control Conference, 2025</li>
-          <li><b>Program Committee Member:</b> International Conference on Cyber-Physical Systems (Posters & Demos), 2025</li>
-          <li><b>Journal Reviewer (200+ reviews):</b> IEEE TAC, Automatica, IEEE L-CSS, IEEE TNNLS, and others</li>
-          <li><b>Conference Reviewer (40+ reviews):</b> CDC, ACC, ECC, and others</li>
-        </ul>
-      </section>
-    </main>
+  <!-- ---------- Hero ---------- -->
+  <div class="hero" id="home">
+    <div class="panels" aria-hidden="true">
+      <span class="p1"><img src="images/panel-ground.jpg" alt="" data-base="images/panel-ground" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{this.remove();}"></span>
+      <span class="p2"><img src="images/panel-orbit.jpg" alt="" data-base="images/panel-orbit" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{this.remove();}"></span>
+      <span class="p3"><img src="images/panel-cislunar.jpg" alt="" data-base="images/panel-cislunar" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{this.remove();}"></span>
+      <span class="p4"><img src="images/panel-deepspace.jpg" alt="" data-base="images/panel-deepspace" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{this.remove();}"></span>
+    </div>
+    <div class="overlay" aria-hidden="true"></div>
+    <div class="inner">
+      <h1>Security and Safety of Space Systems: A Control-Theoretic Perspective</h1>
+      <div class="accent-rule"></div>
+      <h2>Full-Day Workshop</h2>
+      <h2>65th IEEE Conference on Decision and Control (CDC)</h2>
+      <p class="meta">Honolulu, Hawaii, USA &middot; December 14, 2026</p>
+    </div>
   </div>
 
+  <!-- ---------- About ---------- -->
+  <section id="about">
+    <div class="container">
+      <div class="section-head"><h2>About this workshop</h2></div>
+      <p>Space systems have become critical infrastructure for global communication, Earth observation, and scientific discovery. Satellite constellations, now comprising thousands of spacecraft, are projected to reach tens of thousands in the coming decade due to rapid commercialization. At the same time, renewed interest in cislunar and deep-space missions is pushing autonomous systems into increasingly remote and challenging environments. This rapid expansion, amid rising geopolitical competition in space, creates unprecedented opportunities but also introduces security and safety vulnerabilities. Beyond passive hazards such as orbital debris and space weather, space systems must increasingly contend with deliberate interference, including the jamming of satellite communication links and adversarial tracking and manipulation of sensing assets. The resource-constrained nature of space architectures, combined with reliance on wireless communication and the lack of persistent on-site monitoring, leaves them exposed to such disruptions.</p>
+      <p>Control-theoretic tools for resilience and security have matured considerably in terrestrial domains, yet many of these methods do not directly translate to space. Space systems operate under severe sensing, fuel, and actuation limits, with restricted onboard computation and communication that is both delayed and intermittent. In cislunar and deep-space settings, complex gravitational dynamics pose additional challenges for estimation and control. These constraints raise a fundamental question: what does secure and safe decision-making look like when the assumptions underpinning terrestrial control no longer hold?</p>
+      <p>This workshop brings together researchers from control theory, cyber-physical security, and space systems engineering to examine vulnerabilities in space architectures and explore how control-theoretic methods can address them. The program features nine invited half-hour talks and three sessions of lightning talks by early-career researchers, covering topics such as space communications security and privacy, resilient constellation coordination, and space domain awareness.</p>
+    </div>
+  </section>
+
+  <!-- ---------- Speakers ---------- -->
+  <section id="speakers">
+    <div class="container">
+      <div class="section-center">
+        <div class="section-head"><h2>Invited Speakers</h2></div>
+      </div>
+      <div class="grid" style="margin-top:12px;">
+        <div class="person">
+          <img class="avatar" src="images/speakers/Falco.jpg" alt="" data-base="images/speakers/Falco" data-init="GF" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{var d=document.createElement('div');d.className='avatar';d.textContent=this.dataset.init;this.replaceWith(d);}">
+          <h3>Gregory Falco</h3>
+          <p>Cornell University</p>
+        </div>
+        <div class="person">
+          <img class="avatar" src="images/speakers/Fotiadis.jpg" alt="" data-base="images/speakers/Fotiadis" data-init="FF" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{var d=document.createElement('div');d.className='avatar';d.textContent=this.dataset.init;this.replaceWith(d);}">
+          <h3>Filippos Fotiadis</h3>
+          <p>UT Austin</p>
+        </div>
+        <div class="person">
+          <img class="avatar" src="images/speakers/Karabulut-Kurt.jpg" alt="" data-base="images/speakers/Karabulut-Kurt" data-init="GK" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{var d=document.createElement('div');d.className='avatar';d.textContent=this.dataset.init;this.replaceWith(d);}">
+          <h3>Gunes Karabulut-Kurt</h3>
+          <p class="affil-2">Polytechnique Montr&eacute;al</p>
+        </div>
+        <div class="person">
+          <img class="avatar" src="images/speakers/Oishi.jpg" alt="" data-base="images/speakers/Oishi" data-init="MO" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{var d=document.createElement('div');d.className='avatar';d.textContent=this.dataset.init;this.replaceWith(d);}">
+          <h3>Meeko Oishi</h3>
+          <p>University of New Mexico</p>
+        </div>
+        <div class="person">
+          <img class="avatar" src="images/speakers/Pavone.jpg" alt="" data-base="images/speakers/Pavone" data-init="MP" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{var d=document.createElement('div');d.className='avatar';d.textContent=this.dataset.init;this.replaceWith(d);}">
+          <h3>Marco Pavone</h3>
+          <p>Stanford University</p>
+        </div>
+        <div class="person">
+          <img class="avatar" src="images/speakers/Phillips.jpg" alt="" data-base="images/speakers/Phillips" data-init="SP" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{var d=document.createElement('div');d.className='avatar';d.textContent=this.dataset.init;this.replaceWith(d);}">
+          <h3>Sean Phillips</h3>
+          <p class="affil-2">Air Force Research Laboratory</p>
+        </div>
+        <div class="person">
+          <img class="avatar" src="images/speakers/Tanaka.jpg" alt="" data-base="images/speakers/Tanaka" data-init="TT" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{var d=document.createElement('div');d.className='avatar';d.textContent=this.dataset.init;this.replaceWith(d);}">
+          <h3>Takashi Tanaka</h3>
+          <p>Purdue University</p>
+        </div>
+        <div class="person">
+          <img class="avatar" src="images/speakers/Zeliff.jpg" alt="" data-base="images/speakers/Zeliff" data-init="AZ" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{var d=document.createElement('div');d.className='avatar';d.textContent=this.dataset.init;this.replaceWith(d);}">
+          <h3>Andrew Zeliff</h3>
+          <p class="affil-2">Georgia Tech Research Institute</p>
+        </div>
+        <div class="person">
+          <img class="avatar" src="images/speakers/Zhu.jpg" alt="" data-base="images/speakers/Zhu" data-init="QZ" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{var d=document.createElement('div');d.className='avatar';d.textContent=this.dataset.init;this.replaceWith(d);}">
+          <h3>Quanyan Zhu</h3>
+          <p>New York University</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- Program ---------- -->
+  <section id="program">
+    <div class="container">
+      <div class="section-head"><h2>Workshop schedule</h2></div>
+      <table class="schedule">
+        <tbody>
+          <tr class="break"><td class="time">8:30 &ndash; 8:40</td><td>Opening Remarks</td></tr>
+
+          <tr>
+            <td class="time">8:40 &ndash; 9:10</td>
+            <td>
+              <div class="collapsible"><div class="talk-meta"><span class="who">Andrew Zeliff<span class="inst">Georgia Tech Research Institute</span></span><span class="talk-title">State of the Art for Space-Cyber</span></div></div>
+              <div class="abstract"><div class="inner"><b>Abstract:</b> Space systems underpin critical infrastructure, military operations, economies, and ultimately modern society. Their vital role to the survival of humanity is ever-increasing, and the motivation for threats is keeping pace. Space cyber is more than IT, more than radios, and more than EW. This talk explores the state of space cyber from a holistic perspective, removing the silos that have long hindered space mission assurance. We will review unclassified public current events, common technological hurdles that pervade all domains including space, and a few different levels of ongoing challenges for an assured space domain. Finally, we will discuss technical paths toward assured space missions.</div></div>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="time">9:10 &ndash; 9:40</td>
+            <td>
+              <div class="collapsible"><div class="talk-meta"><span class="who">Takashi Tanaka<span class="inst">Purdue University</span></span><span class="talk-title">Cryptography-Integrated Protocols for Confidential Space Traffic Management</span></div></div>
+              <div class="abstract"><div class="inner"><b>Abstract:</b> The increasing complexity of space operations and the evolving conflicts of interest among stakeholders pose significant challenges to the effective utilization of space resources for the common good. To establish a secure collaborative future space ecosystem, we must develop socio-technical solutions that allow various entities to engage constructively in negotiation, cooperation, and healthy competition. However, the confidentiality-utility trade-off poses a significant barrier that limits effective collaboration. In this talk, we consider an encrypted computation framework that will demonstrate how cryptography-integrated protocols can resolve safety-critical conflicts in space while preserving data confidentiality among competing actors. Although our immediate focus is on encrypted computation for collision-avoidance maneuvers, we envision that the same framework can be extended to privacy-preserving resource allocation, scheduling, and orbital servicing tasks.</div></div>
+            </td>
+          </tr>
+
+          <tr class="lightning"><td class="time">9:40 &ndash; 10:00</td><td>Lightning Round 1</td></tr>
+          <tr class="break"><td class="time">10:00 &ndash; 10:30</td><td>Coffee Break</td></tr>
+
+          <tr>
+            <td class="time">10:30 &ndash; 11:00</td>
+            <td>
+              <div class="collapsible"><div class="talk-meta"><span class="who">Filippos Fotiadis<span class="inst">UT Austin</span></span><span class="talk-title">Motion as Defense: Co-Design of Control and Communication Against Jamming in Earth and Cislunar Space</span></div></div>
+              <div class="abstract"><div class="inner"><b>Abstract:</b> As space becomes increasingly congested, satellite systems face growing risks from cyber-physical attacks by co-orbital adversaries. One such attack involves jamming radio-frequency communication signals, where adversaries transmit high-power noise to disrupt Earth-satellite links. In this talk, I will show that the effectiveness of such attacks is fundamentally governed by the relative geometry between an adversary and its target. I will then demonstrate how co-designing motion and communication strategies enables satellites to exploit this geometric dependence to maintain connectivity under attack, and how adversaries can exploit it to maximize disruption. Finally, I will extend these ideas to cislunar space, where complex gravitational dynamics make geometry control significantly more challenging.</div></div>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="time">11:00 &ndash; 11:30</td>
+            <td>
+              <div class="collapsible"><div class="talk-meta"><span class="who">Quanyan Zhu<span class="inst">New York University</span></span><span class="talk-title">Resilient Autonomy in Space: Learning and Strategic Foundations for Security and Safety in Contested Orbits</span></div></div>
+              <div class="abstract"><div class="inner"><b>Abstract:</b> Space systems security and safety are uniquely shaped by the tight coupling of orbital dynamics, limited sensing, and adversarial interaction. Satellites operate in a constrained physical environment where motion, observation, and control are deeply interdependent, while facing uncertain conditions and potential strategic threats. In this setting, safety (e.g., collision avoidance and stability) and security (e.g., resilience to interference and deception) cannot be treated separately, but must be addressed in an integrated manner. This talk presents a high-level framework that integrates game theory and learning to understand and design resilient space systems. We view orbital interactions, threat response, and multi-satellite coordination as interconnected processes in which agents must act, infer, and adapt under partial and evolving information. Within this perspective, orbital interactions are modeled as dynamic games with asymmetric information, and learning plays a central role in enabling agents to operate under model uncertainty and limited observations. Finally, we introduce distributed approaches for resilient coordination in satellite constellations, where autonomous agents adapt and reconfigure to maintain system-level performance under disruptions. The overarching message is that resilience in space systems emerges from the joint consideration of dynamics, information, and strategic interaction, calling for unified frameworks that bridge control, game theory, and learning.</div></div>
+            </td>
+          </tr>
+
+          <tr class="lightning"><td class="time">11:30 &ndash; 12:00</td><td>Lightning Round 2</td></tr>
+          <tr class="break"><td class="time">12:00 &ndash; 14:00</td><td>Lunch Break</td></tr>
+
+          <tr>
+            <td class="time">14:00 &ndash; 14:30</td>
+            <td>
+              <div class="collapsible"><div class="talk-meta"><span class="who">Gunes Karabulut-Kurt<span class="inst">Polytechnique Montr&eacute;al</span></span><span class="talk-title">Securing the Backhaul in Non-Terrestrial Networks</span></div></div>
+              <div class="abstract"><div class="inner"><b>Abstract:</b> As defined by 3GPP, Non-Terrestrial Networks (NTN) encompass networks or network segments that rely on airborne or spaceborne platforms. These include Uncrewed Aircraft Systems (UAS), High-Altitude Platform Stations (HAPS), and satellites across a range of orbits, from Low Earth Orbit (LEO) to Geosynchronous Orbit (GEO). NTN elements may function as relays or base stations, offering compelling advantages for wide-area and underserved coverage scenarios. Yet the lack of wired backhaul between NTN elements and the core network introduces significant security vulnerabilities for emerging deployments. The talk examines these vulnerabilities, with particular attention to threats stemming from the wireless and mobile nature of backhaul links. Active and passive attack vectors targeting these links are explored, alongside candidate countermeasures and open research questions.</div></div>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="time">14:30 &ndash; 15:00</td>
+            <td>
+              <div class="collapsible"><div class="talk-meta"><span class="who">Gregory Falco<span class="inst">Cornell University</span></span><span class="talk-title">Exploiting Physics for Space Cybersecurity</span></div></div>
+              <div class="abstract"><div class="inner"><b>Abstract:</b> Space systems are fundamentally cyber-physical platforms whose security is inseparable from dynamics, estimation, and control. Rather than viewing orbital vehicles as isolated IT systems, this talk argues for a physics-informed approach in which spacecraft motion, control authority, autonomy, and mission objectives define both the attack surface and the defensive design space. A central contribution is to show that the unique dynamical structure of spacecraft gives rise to cybersecurity problems that are not only distinct from terrestrial settings but also especially well-suited for analysis through control theory and system dynamics. This perspective motivates security methods based on model-based detection, resilient estimation and control, and mission-preserving response strategies under attack. In this view, the physics of the space domain is not simply a constraint on cybersecurity. Physics is an asset that can be exploited to build more robust and resilient defenses.</div></div>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="time">15:00 &ndash; 15:30</td>
+            <td>
+              <div class="collapsible"><div class="talk-meta"><span class="who">Sean Phillips<span class="inst">Air Force Research Laboratory</span></span><span class="talk-title">Leveraging Terrestrial Space Testbed for Safe Satellite Mission Planning</span></div></div>
+              <div class="abstract"><div class="inner"><b>Abstract:</b> With the recent rapid evolution of space capabilities like proliferated satellite constellations, rendezvous and proximity operations, and interest in non-Keplerian operations, there is a driving need towards development and implementation of satellite autonomy. However, many satellite operators remain risk-averse and reluctant to test advanced algorithms and software tools on their systems. This presentation will showcase the Local Intelligent Network of Collaborative Satellites (LINCS) Lab at the Air Force Research Lab to provide terrestrial testing of satellite autonomy prior to space deployment. This laboratory demonstrates the autonomous mission management capabilities to both the acquisitions and operator community in a safe and repeatable manner. This presentation will provide an overview of the facility, scenarios and use cases, recent successes in the integration, and collaboration avenues.</div></div>
+            </td>
+          </tr>
+
+          <tr class="break"><td class="time">15:30 &ndash; 16:00</td><td>Coffee Break</td></tr>
+
+          <tr>
+            <td class="time">16:00 &ndash; 16:30</td>
+            <td>
+              <div class="collapsible"><div class="talk-meta"><span class="who">Marco Pavone<span class="inst">Stanford University</span></span><span class="talk-title">Ensuring Physical AI Safety for AI-Enabled Aerospace Systems</span></div></div>
+              <div class="abstract"><div class="inner"><b>Abstract:</b> This talk will discuss recent advancements toward deploying AI architectures in aerospace systems, spanning design-time, run-time, and validation-time guardrails. Emerging approaches to ensuring safety and reliability will be highlighted, with an emphasis on bridging the gap between learning-based methods and certifiable system performance.</div></div>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="time">16:30 &ndash; 17:00</td>
+            <td>
+              <div class="collapsible"><div class="talk-meta"><span class="who">Meeko Oishi<span class="inst">University of New Mexico</span></span><span class="talk-title">Chance Constraint Evaluation Through Successive Convexification</span></div></div>
+              <div class="abstract"><div class="inner"><b>Abstract:</b> One of the major challenges in stochastic optimal control under constraints is the evaluation of chance constraints. While closed-form expressions are available for special cases, such as linear dynamics with Gaussian disturbances and linear constraints, in general, efficient and accurate evaluation of chance constraints can be difficult. We focus here on computationally tractable methods for evaluating general chance constraints through a deterministic, differentiable approximation of the probabilistic level set. The resulting deterministic optimal control problem can then be solved using a successive convexification (SCvx) framework, which enables efficient computation.</div></div>
+            </td>
+          </tr>
+
+          <tr class="lightning"><td class="time">17:00 &ndash; 17:20</td><td>Lightning Round 3</td></tr>
+          <tr class="break"><td class="time">17:20 &ndash; 17:30</td><td>Closing Remarks</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ---------- Lightning Talks ---------- -->
+  <section id="lightning">
+    <div class="container">
+      <div class="section-head"><h2>Lightning Talks</h2></div>
+      <div class="prose">
+        <p>In addition to the invited speakers, the workshop agenda includes three short series of lightning talks by participating early-career researchers. The purpose is twofold: to disseminate new, not necessarily complete, results from the research community; and to provide a forum for younger members of the community to showcase their work and expand their professional networks.</p>
+        <p>We actively solicit lightning talk contributions from early-career researchers and underrepresented groups through an open call. Submission details and deadlines will be announced here. To express interest, please contact the <a href="mailto:ffotiadis@utexas.edu">organizers</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- Organizers ---------- -->
+  <section id="organizers">
+    <div class="container">
+      <div class="section-center">
+        <div class="section-head"><h2>Organizers</h2></div>
+      </div>
+      <div class="org-grid" style="margin-top:12px;">
+        <div class="person org">
+          <img class="avatar" src="images/organizers/Fotiadis.jpg" alt="" data-base="images/organizers/Fotiadis" data-init="FF" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{var d=document.createElement('div');d.className='avatar';d.textContent=this.dataset.init;this.replaceWith(d);}">
+          <h3>Filippos Fotiadis</h3>
+          <p class="role">Postdoctoral Fellow</p>
+          <p>UT Austin</p>
+        </div>
+        <div class="person org">
+          <img class="avatar" src="images/organizers/Tsiotras.jpg" alt="" data-base="images/organizers/Tsiotras" data-init="PT" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{var d=document.createElement('div');d.className='avatar';d.textContent=this.dataset.init;this.replaceWith(d);}">
+          <h3>Panagiotis Tsiotras</h3>
+          <p class="role">Professor</p>
+          <p>Georgia Tech</p>
+        </div>
+        <div class="person org">
+          <img class="avatar" src="images/organizers/Tanaka.jpg" alt="" data-base="images/organizers/Tanaka" data-init="TT" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{var d=document.createElement('div');d.className='avatar';d.textContent=this.dataset.init;this.replaceWith(d);}">
+          <h3>Takashi Tanaka</h3>
+          <p class="role">Associate Professor</p>
+          <p>Purdue University</p>
+        </div>
+      </div>
+      <div class="section-head" style="margin-top:56px;"><h2>Contact</h2></div>
+      <p class="org-contact">For any questions regarding the workshop, please contact the <a href="mailto:ffotiadis@utexas.edu">workshop organizers</a>.</p>
+    </div>
+  </section>
+
+  <!-- ---------- Registration ---------- -->
+  <section id="registration">
+    <div class="container">
+      <div class="section-head"><h2>Registration</h2></div>
+      <p class="org-contact">Register through the official <a href="https://cdc2026.ieeecss.org/registration" target="_blank" rel="noopener">IEEE CDC 2026 registration page</a>. Early registration closes September 4, 2026.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="foot-h">Workshop</div>
+          <p>Security and Safety of Space Systems: A Control-Theoretic Perspective</p>
+        </div>
+        <div>
+          <div class="foot-h">Event</div>
+          <p>65th IEEE Conference on Decision and Control (CDC)<br>Honolulu, Hawaii, USA &middot; December 14, 2026</p>
+        </div>
+        <div>
+          <div class="foot-h">Organizers</div>
+          <p>UT Austin &middot; Georgia Tech &middot; Purdue</p>
+        </div>
+        <div>
+          <div class="foot-h">Contact</div>
+          <p><a href="mailto:ffotiadis@utexas.edu">ffotiadis@utexas.edu</a><br>Questions? Email the organizers.</p>
+        </div>
+      </div>
+      <div class="foot-base">
+        <span>&copy; 2026 Workshop Organizers &middot; 65th IEEE Conference on Decision and Control</span>
+        <span class="foot-updated">Last updated July 2026</span>
+      </div>
+    </div>
+  </footer>
+
   <script>
-    function showSection(e, sectionName){
-      document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-      document.getElementById(sectionName).classList.add('active');
-      document.querySelectorAll('.nav-link').forEach(a => a.classList.remove('active'));
-      e.target.classList.add('active');
-      window.scrollTo(0, 0);
+    // Sticky nav background on scroll
+    var header = document.getElementById('site-header');
+    window.addEventListener('scroll', function () {
+      header.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // Mobile menu toggle
+    var toggle = document.querySelector('.menu-toggle');
+    var menu = document.getElementById('menu');
+    toggle.addEventListener('click', function () {
+      var open = menu.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open);
+    });
+    menu.addEventListener('click', function (e) {
+      if (e.target.tagName === 'A') menu.classList.remove('open');
+    });
+
+    // Collapsible abstracts
+    document.querySelectorAll('.collapsible').forEach(function (c) {
+      c.addEventListener('click', function () {
+        this.classList.toggle('active');
+        var panel = this.nextElementSibling;
+        panel.style.maxHeight = panel.style.maxHeight ? null : panel.scrollHeight + 'px';
+      });
+    });
+
+    // Scrollspy: highlight active nav link
+    var sections = document.querySelectorAll('section, .hero');
+    var links = document.querySelectorAll('#menu a');
+    function setActive(id) {
+      links.forEach(function (l) {
+        l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+      });
     }
+    function onScroll() {
+      var pos = window.scrollY + 120;
+      // If scrolled to (or near) the bottom, force the last linked section active
+      if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4) {
+        for (var i = sections.length - 1; i >= 0; i--) {
+          if (document.querySelector('#menu a[href="#' + sections[i].id + '"]')) {
+            setActive(sections[i].id);
+            return;
+          }
+        }
+      }
+      var current = null;
+      sections.forEach(function (sec) {
+        if (!document.querySelector('#menu a[href="#' + sec.id + '"]')) return;
+        if (pos >= sec.offsetTop) current = sec.id;
+      });
+      if (current) setActive(current);
+    }
+    window.addEventListener('scroll', onScroll);
+    onScroll();
   </script>
+
 </body>
+
 </html>
