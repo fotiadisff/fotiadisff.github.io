@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Security and Safety of Space Systems: A Control-Theoretic Perspective</title>
+  <meta name="description" content="CDC 2026 full-day workshop on the security and safety of space systems from a control-theoretic perspective.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --accent: #f16821;
+      --ink: #2b2b2b;
+      --muted: #737373;
+      --navy: #1f3a63;
+      --maroon: #7a1f2b;
+      --line: #e7e7e7;
+      --bg: #ffffff;
+      --bg-alt: #f7f7f8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--ink);
+      line-height: 1.65;
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+    /* ---------- Nav ---------- */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 18px 0;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+    header.scrolled {
+      background: #1a1a1a;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+      padding: 12px 0;
+    }
+    nav.container {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 28px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    nav ul li a {
+      color: #fff;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    nav ul li a:hover,
+    nav ul li a.active { color: var(--accent); text-decoration: none; }
+
+    .menu-toggle {
+      display: none;
+      background: none; border: none;
+      color: #fff; font-size: 1.6rem; cursor: pointer;
+    }
+
+    @media (max-width: 860px) {
+      nav ul { display: none; width: 100%; flex-direction: column; gap: 0; margin-top: 12px; }
+      nav ul.open { display: flex; }
+      nav ul li { border-top: 1px solid rgba(255,255,255,0.12); }
+      nav ul li a { display: block; padding: 12px 0; }
+      nav.container { flex-wrap: wrap; justify-content: space-between; }
+      header, header.scrolled { background: #1a1a1a; }
+      .menu-toggle { display: block; }
+    }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      min-height: 108vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      background: #07101f;
+      padding: 120px 0 80px;
+    }
+    /* Four-panel banner (2x2): ground station -> Earth orbit -> cislunar -> deep space */
+    .hero .panels {
+      position: absolute; inset: 0; z-index: 0;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+    }
+    .hero .panels span {
+      position: relative;
+      background-color: #0a1526;
+      overflow: hidden;
+    }
+    .hero .panels span img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    /* Dark overlay so the white title stays readable over any images */
+    .hero .overlay {
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(180deg, rgba(6,10,20,0.42), rgba(6,10,20,0.60));
+    }
+    .hero .inner { position: relative; z-index: 2; max-width: 1000px; padding: 0 24px; }
+    .hero::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 60px;
+      z-index: 1;
+      background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.35) 78%, #ffffff 100%);
+      pointer-events: none;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5.5vw, 4rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      line-height: 1.2;
+      letter-spacing: 0.02em;
+    }
+    .hero .accent-rule {
+      width: 72px; height: 4px;
+      background: var(--accent);
+      margin: 28px auto;
+    }
+    .hero h2 {
+      font-weight: 300;
+      font-size: clamp(1.05rem, 2.2vw, 1.5rem);
+      margin-bottom: 8px;
+    }
+    .hero .meta { font-weight: 600; color: var(--accent); font-size: 1.05rem; margin-top: 10px; }
+
+    /* ---------- Sections ---------- */
+    section { padding: 80px 0; }
+    section:nth-of-type(even) { background: var(--bg-alt); }
+
+    .section-head {
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 8px;
+      margin-bottom: 48px;
+      display: inline-block;
+    }
+    .section-head h2 {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 1.9rem;
+    }
+    .section-center { text-align: center; }
+    .section-center .section-head { display: inline-block; border-bottom: 2px solid var(--accent); }
+
+    #about p { font-size: 1.05rem; margin-bottom: 18px; text-align: justify; }
+
+    /* ---------- Speakers ---------- */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 52px 32px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    @media (max-width: 760px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 460px) { .grid { grid-template-columns: 1fr; } }
+
+    .person { text-align: center; }
+    .person img,
+    .person .avatar,
+    .org img,
+    .org .avatar {
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 18px;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #24406e, #0e1b33);
+      color: #fff; font-size: 2.4rem; font-weight: 700;
+      border: 3px solid #fff;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    }
+    .person h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 4px; }
+    .person p { color: #555; font-size: 0.92rem; }
+    .person .affil-2 { font-size: 0.85rem; }
+
+    /* ---------- Program ---------- */
+    .schedule { width: 100%; border-collapse: collapse; }
+    .schedule tr { border-bottom: 1px solid var(--line); }
+    .schedule td { padding: 16px 10px; vertical-align: top; }
+    .schedule td.time {
+      width: 120px; color: #888; font-weight: 500;
+      white-space: nowrap; font-size: 0.85rem;
+      letter-spacing: 0.02em; padding-top: 18px;
+    }
+    .schedule .break td { color: #999; font-weight: 500; background: var(--bg-alt); font-size: 0.9rem; }
+    .schedule .lightning td { color: var(--navy); font-weight: 600; font-size: 0.9rem; }
+    .schedule .break td.time, .schedule .lightning td.time { color: #999; }
+
+    .collapsible {
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      border-left: 3px solid var(--accent);
+      padding-left: 16px;
+      margin-left: -2px;
+      transition: background 0.15s ease;
+    }
+    .collapsible:hover { background: rgba(241, 104, 33, 0.05); }
+    .collapsible .talk-meta { display: flex; flex-direction: column; gap: 3px; max-width: 60ch; }
+    .collapsible .who {
+      color: var(--ink);
+      font-weight: 700;
+      font-size: 1.08rem;
+      line-height: 1.25;
+    }
+    .collapsible .who .inst { display: block; color: #888; font-weight: 400; font-size: 0.82rem; margin-top: 1px; }
+    .collapsible .talk-title { color: #444; font-weight: 500; font-size: 0.97rem; margin-top: 5px; }
+    .collapsible::after {
+      content: '+';
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 1.15rem;
+      flex-shrink: 0;
+      line-height: 1.2;
+      margin-left: auto;
+      padding-left: 12px;
+    }
+    .collapsible.active::after { content: '\2212'; }
+    .abstract {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.28s ease;
+    }
+    .abstract .inner {
+      padding: 14px 2px 4px 17px;
+      font-size: 0.95rem;
+      color: #444;
+      text-align: justify;
+    }
+    .abstract .inner b { color: var(--ink); }
+
+    /* ---------- Lightning / text sections ---------- */
+    .prose { font-size: 1.05rem; color: #333; max-width: 820px; }
+    .prose p { margin-bottom: 16px; text-align: justify; }
+
+    /* ---------- Organizers ---------- */
+    .org-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    @media (max-width: 700px) { .org-grid { grid-template-columns: 1fr; } }
+    .org .role { color: var(--accent); font-size: 0.85rem; font-weight: 600; margin-top: 4px; }
+    .org-contact {
+      text-align: left;
+      margin-top: 0;
+      font-size: 1.05rem;
+      color: #444;
+    }
+
+    /* ---------- Footer ---------- */
+    footer {
+      background: #1a1a1a;
+      color: #9a9a9a;
+      padding: 48px 0 28px;
+      font-size: 0.95rem;
+    }
+    footer a { color: var(--accent); }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 40px;
+      text-align: left;
+      align-items: start;
+    }
+    @media (max-width: 820px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; } }
+    @media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; gap: 24px; } }
+    .footer-grid .foot-h {
+      color: var(--accent);
+      font-size: 0.74rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .footer-grid p { line-height: 1.6; }
+    .foot-base {
+      border-top: 1px solid #2e2e2e;
+      margin-top: 32px;
+      padding-top: 18px;
+      color: #777;
+      font-size: 0.82rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .foot-updated { color: #595959; }
+
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .abstract { transition: none; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header id="site-header">
+    <nav class="container">
+      <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">&#9776;</button>
+      <ul id="menu">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#speakers">Speakers</a></li>
+        <li><a href="#program">Program</a></li>
+        <li><a href="#lightning">Lightning Talks</a></li>
+        <li><a href="#organizers">Organizers</a></li>
+        <li><a href="#registration">Registration</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ---------- Hero ---------- -->
+  <div class="hero" id="home">
+    <div class="panels" aria-hidden="true">
+      <span class="p1"><img src="images/panel-ground.jpg" alt="" data-base="images/panel-ground" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{this.remove();}"></span>
+      <span class="p2"><img src="images/panel-orbit.jpg" alt="" data-base="images/panel-orbit" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{this.remove();}"></span>
+      <span class="p3"><img src="images/panel-cislunar.jpg" alt="" data-base="images/panel-cislunar" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{this.remove();}"></span>
+      <span class="p4"><img src="images/panel-deepspace.jpg" alt="" data-base="images/panel-deepspace" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{this.remove();}"></span>
+    </div>
+    <div class="overlay" aria-hidden="true"></div>
+    <div class="inner">
+      <h1>Security and Safety of Space Systems: A Control-Theoretic Perspective</h1>
+      <div class="accent-rule"></div>
+      <h2>Full-Day Workshop</h2>
+      <h2>65th IEEE Conference on Decision and Control (CDC)</h2>
+      <p class="meta">Honolulu, Hawaii, USA &middot; December 14, 2026</p>
+    </div>
+  </div>
+
+  <!-- ---------- About ---------- -->
+  <section id="about">
+    <div class="container">
+      <div class="section-head"><h2>About this workshop</h2></div>
+      <p>Space systems have become critical infrastructure for global communication, Earth observation, and scientific discovery. Satellite constellations, now comprising thousands of spacecraft, are projected to reach tens of thousands in the coming decade due to rapid commercialization. At the same time, renewed interest in cislunar and deep-space missions is pushing autonomous systems into increasingly remote and challenging environments. This rapid expansion, amid rising geopolitical competition in space, creates unprecedented opportunities but also introduces security and safety vulnerabilities. Beyond passive hazards such as orbital debris and space weather, space systems must increasingly contend with deliberate interference, including the jamming of satellite communication links and adversarial tracking and manipulation of sensing assets. The resource-constrained nature of space architectures, combined with reliance on wireless communication and the lack of persistent on-site monitoring, leaves them exposed to such disruptions.</p>
+      <p>Control-theoretic tools for resilience and security have matured considerably in terrestrial domains, yet many of these methods do not directly translate to space. Space systems operate under severe sensing, fuel, and actuation limits, with restricted onboard computation and communication that is both delayed and intermittent. In cislunar and deep-space settings, complex gravitational dynamics pose additional challenges for estimation and control. These constraints raise a fundamental question: what does secure and safe decision-making look like when the assumptions underpinning terrestrial control no longer hold?</p>
+      <p>This workshop brings together researchers from control theory, cyber-physical security, and space systems engineering to examine vulnerabilities in space architectures and explore how control-theoretic methods can address them. The program features nine invited half-hour talks and three sessions of lightning talks by early-career researchers, covering topics such as space communications security and privacy, resilient constellation coordination, and space domain awareness.</p>
+    </div>
+  </section>
+
+  <!-- ---------- Speakers ---------- -->
+  <section id="speakers">
+    <div class="container">
+      <div class="section-center">
+        <div class="section-head"><h2>Invited Speakers</h2></div>
+      </div>
+      <div class="grid" style="margin-top:12px;">
+        <div class="person">
+          <img class="avatar" src="images/speakers/Falco.jpg" alt="" data-base="images/speakers/Falco" data-init="GF" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{var d=document.createElement('div');d.className='avatar';d.textContent=this.dataset.init;this.replaceWith(d);}">
+          <h3>Gregory Falco</h3>
+          <p>Cornell University</p>
+        </div>
+        <div class="person">
+          <img class="avatar" src="images/speakers/Fotiadis.jpg" alt="" data-base="images/speakers/Fotiadis" data-init="FF" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{var d=document.createElement('div');d.className='avatar';d.textContent=this.dataset.init;this.replaceWith(d);}">
+          <h3>Filippos Fotiadis</h3>
+          <p>UT Austin</p>
+        </div>
+        <div class="person">
+          <img class="avatar" src="images/speakers/Karabulut-Kurt.jpg" alt="" data-base="images/speakers/Karabulut-Kurt" data-init="GK" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{var d=document.createElement('div');d.className='avatar';d.textContent=this.dataset.init;this.replaceWith(d);}">
+          <h3>Gunes Karabulut-Kurt</h3>
+          <p class="affil-2">Polytechnique Montr&eacute;al</p>
+        </div>
+        <div class="person">
+          <img class="avatar" src="images/speakers/Oishi.jpg" alt="" data-base="images/speakers/Oishi" data-init="MO" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{var d=document.createElement('div');d.className='avatar';d.textContent=this.dataset.init;this.replaceWith(d);}">
+          <h3>Meeko Oishi</h3>
+          <p>University of New Mexico</p>
+        </div>
+        <div class="person">
+          <img class="avatar" src="images/speakers/Pavone.jpg" alt="" data-base="images/speakers/Pavone" data-init="MP" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{var d=document.createElement('div');d.className='avatar';d.textContent=this.dataset.init;this.replaceWith(d);}">
+          <h3>Marco Pavone</h3>
+          <p>Stanford University</p>
+        </div>
+        <div class="person">
+          <img class="avatar" src="images/speakers/Phillips.jpg" alt="" data-base="images/speakers/Phillips" data-init="SP" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{var d=document.createElement('div');d.className='avatar';d.textContent=this.dataset.init;this.replaceWith(d);}">
+          <h3>Sean Phillips</h3>
+          <p class="affil-2">Air Force Research Laboratory</p>
+        </div>
+        <div class="person">
+          <img class="avatar" src="images/speakers/Tanaka.jpg" alt="" data-base="images/speakers/Tanaka" data-init="TT" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{var d=document.createElement('div');d.className='avatar';d.textContent=this.dataset.init;this.replaceWith(d);}">
+          <h3>Takashi Tanaka</h3>
+          <p>Purdue University</p>
+        </div>
+        <div class="person">
+          <img class="avatar" src="images/speakers/Zeliff.jpg" alt="" data-base="images/speakers/Zeliff" data-init="AZ" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{var d=document.createElement('div');d.className='avatar';d.textContent=this.dataset.init;this.replaceWith(d);}">
+          <h3>Andrew Zeliff</h3>
+          <p class="affil-2">Georgia Tech Research Institute</p>
+        </div>
+        <div class="person">
+          <img class="avatar" src="images/speakers/Zhu.jpg" alt="" data-base="images/speakers/Zhu" data-init="QZ" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{var d=document.createElement('div');d.className='avatar';d.textContent=this.dataset.init;this.replaceWith(d);}">
+          <h3>Quanyan Zhu</h3>
+          <p>New York University</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- Program ---------- -->
+  <section id="program">
+    <div class="container">
+      <div class="section-head"><h2>Workshop schedule</h2></div>
+      <table class="schedule">
+        <tbody>
+          <tr class="break"><td class="time">8:30 &ndash; 8:40</td><td>Opening Remarks</td></tr>
+
+          <tr>
+            <td class="time">8:40 &ndash; 9:10</td>
+            <td>
+              <div class="collapsible"><div class="talk-meta"><span class="who">Andrew Zeliff<span class="inst">Georgia Tech Research Institute</span></span><span class="talk-title">State of the Art for Space-Cyber</span></div></div>
+              <div class="abstract"><div class="inner"><b>Abstract:</b> Space systems underpin critical infrastructure, military operations, economies, and ultimately modern society. Their vital role to the survival of humanity is ever-increasing, and the motivation for threats is keeping pace. Space cyber is more than IT, more than radios, and more than EW. This talk explores the state of space cyber from a holistic perspective, removing the silos that have long hindered space mission assurance. We will review unclassified public current events, common technological hurdles that pervade all domains including space, and a few different levels of ongoing challenges for an assured space domain. Finally, we will discuss technical paths toward assured space missions.</div></div>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="time">9:10 &ndash; 9:40</td>
+            <td>
+              <div class="collapsible"><div class="talk-meta"><span class="who">Takashi Tanaka<span class="inst">Purdue University</span></span><span class="talk-title">Cryptography-Integrated Protocols for Confidential Space Traffic Management</span></div></div>
+              <div class="abstract"><div class="inner"><b>Abstract:</b> The increasing complexity of space operations and the evolving conflicts of interest among stakeholders pose significant challenges to the effective utilization of space resources for the common good. To establish a secure collaborative future space ecosystem, we must develop socio-technical solutions that allow various entities to engage constructively in negotiation, cooperation, and healthy competition. However, the confidentiality-utility trade-off poses a significant barrier that limits effective collaboration. In this talk, we consider an encrypted computation framework that will demonstrate how cryptography-integrated protocols can resolve safety-critical conflicts in space while preserving data confidentiality among competing actors. Although our immediate focus is on encrypted computation for collision-avoidance maneuvers, we envision that the same framework can be extended to privacy-preserving resource allocation, scheduling, and orbital servicing tasks.</div></div>
+            </td>
+          </tr>
+
+          <tr class="lightning"><td class="time">9:40 &ndash; 10:00</td><td>Lightning Round 1</td></tr>
+          <tr class="break"><td class="time">10:00 &ndash; 10:30</td><td>Coffee Break</td></tr>
+
+          <tr>
+            <td class="time">10:30 &ndash; 11:00</td>
+            <td>
+              <div class="collapsible"><div class="talk-meta"><span class="who">Filippos Fotiadis<span class="inst">UT Austin</span></span><span class="talk-title">Motion as Defense: Co-Design of Control and Communication Against Jamming in Earth and Cislunar Space</span></div></div>
+              <div class="abstract"><div class="inner"><b>Abstract:</b> As space becomes increasingly congested, satellite systems face growing risks from cyber-physical attacks by co-orbital adversaries. One such attack involves jamming radio-frequency communication signals, where adversaries transmit high-power noise to disrupt Earth-satellite links. In this talk, I will show that the effectiveness of such attacks is fundamentally governed by the relative geometry between an adversary and its target. I will then demonstrate how co-designing motion and communication strategies enables satellites to exploit this geometric dependence to maintain connectivity under attack, and how adversaries can exploit it to maximize disruption. Finally, I will extend these ideas to cislunar space, where complex gravitational dynamics make geometry control significantly more challenging.</div></div>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="time">11:00 &ndash; 11:30</td>
+            <td>
+              <div class="collapsible"><div class="talk-meta"><span class="who">Quanyan Zhu<span class="inst">New York University</span></span><span class="talk-title">Resilient Autonomy in Space: Learning and Strategic Foundations for Security and Safety in Contested Orbits</span></div></div>
+              <div class="abstract"><div class="inner"><b>Abstract:</b> Space systems security and safety are uniquely shaped by the tight coupling of orbital dynamics, limited sensing, and adversarial interaction. Satellites operate in a constrained physical environment where motion, observation, and control are deeply interdependent, while facing uncertain conditions and potential strategic threats. In this setting, safety (e.g., collision avoidance and stability) and security (e.g., resilience to interference and deception) cannot be treated separately, but must be addressed in an integrated manner. This talk presents a high-level framework that integrates game theory and learning to understand and design resilient space systems. We view orbital interactions, threat response, and multi-satellite coordination as interconnected processes in which agents must act, infer, and adapt under partial and evolving information. Within this perspective, orbital interactions are modeled as dynamic games with asymmetric information, and learning plays a central role in enabling agents to operate under model uncertainty and limited observations. Finally, we introduce distributed approaches for resilient coordination in satellite constellations, where autonomous agents adapt and reconfigure to maintain system-level performance under disruptions. The overarching message is that resilience in space systems emerges from the joint consideration of dynamics, information, and strategic interaction, calling for unified frameworks that bridge control, game theory, and learning.</div></div>
+            </td>
+          </tr>
+
+          <tr class="lightning"><td class="time">11:30 &ndash; 12:00</td><td>Lightning Round 2</td></tr>
+          <tr class="break"><td class="time">12:00 &ndash; 14:00</td><td>Lunch Break</td></tr>
+
+          <tr>
+            <td class="time">14:00 &ndash; 14:30</td>
+            <td>
+              <div class="collapsible"><div class="talk-meta"><span class="who">Gunes Karabulut-Kurt<span class="inst">Polytechnique Montr&eacute;al</span></span><span class="talk-title">Securing the Backhaul in Non-Terrestrial Networks</span></div></div>
+              <div class="abstract"><div class="inner"><b>Abstract:</b> As defined by 3GPP, Non-Terrestrial Networks (NTN) encompass networks or network segments that rely on airborne or spaceborne platforms. These include Uncrewed Aircraft Systems (UAS), High-Altitude Platform Stations (HAPS), and satellites across a range of orbits, from Low Earth Orbit (LEO) to Geosynchronous Orbit (GEO). NTN elements may function as relays or base stations, offering compelling advantages for wide-area and underserved coverage scenarios. Yet the lack of wired backhaul between NTN elements and the core network introduces significant security vulnerabilities for emerging deployments. The talk examines these vulnerabilities, with particular attention to threats stemming from the wireless and mobile nature of backhaul links. Active and passive attack vectors targeting these links are explored, alongside candidate countermeasures and open research questions.</div></div>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="time">14:30 &ndash; 15:00</td>
+            <td>
+              <div class="collapsible"><div class="talk-meta"><span class="who">Gregory Falco<span class="inst">Cornell University</span></span><span class="talk-title">Exploiting Physics for Space Cybersecurity</span></div></div>
+              <div class="abstract"><div class="inner"><b>Abstract:</b> Space systems are fundamentally cyber-physical platforms whose security is inseparable from dynamics, estimation, and control. Rather than viewing orbital vehicles as isolated IT systems, this talk argues for a physics-informed approach in which spacecraft motion, control authority, autonomy, and mission objectives define both the attack surface and the defensive design space. A central contribution is to show that the unique dynamical structure of spacecraft gives rise to cybersecurity problems that are not only distinct from terrestrial settings but also especially well-suited for analysis through control theory and system dynamics. This perspective motivates security methods based on model-based detection, resilient estimation and control, and mission-preserving response strategies under attack. In this view, the physics of the space domain is not simply a constraint on cybersecurity. Physics is an asset that can be exploited to build more robust and resilient defenses.</div></div>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="time">15:00 &ndash; 15:30</td>
+            <td>
+              <div class="collapsible"><div class="talk-meta"><span class="who">Sean Phillips<span class="inst">Air Force Research Laboratory</span></span><span class="talk-title">Leveraging Terrestrial Space Testbed for Safe Satellite Mission Planning</span></div></div>
+              <div class="abstract"><div class="inner"><b>Abstract:</b> With the recent rapid evolution of space capabilities like proliferated satellite constellations, rendezvous and proximity operations, and interest in non-Keplerian operations, there is a driving need towards development and implementation of satellite autonomy. However, many satellite operators remain risk-averse and reluctant to test advanced algorithms and software tools on their systems. This presentation will showcase the Local Intelligent Network of Collaborative Satellites (LINCS) Lab at the Air Force Research Lab to provide terrestrial testing of satellite autonomy prior to space deployment. This laboratory demonstrates the autonomous mission management capabilities to both the acquisitions and operator community in a safe and repeatable manner. This presentation will provide an overview of the facility, scenarios and use cases, recent successes in the integration, and collaboration avenues.</div></div>
+            </td>
+          </tr>
+
+          <tr class="break"><td class="time">15:30 &ndash; 16:00</td><td>Coffee Break</td></tr>
+
+          <tr>
+            <td class="time">16:00 &ndash; 16:30</td>
+            <td>
+              <div class="collapsible"><div class="talk-meta"><span class="who">Marco Pavone<span class="inst">Stanford University</span></span><span class="talk-title">Ensuring Physical AI Safety for AI-Enabled Aerospace Systems</span></div></div>
+              <div class="abstract"><div class="inner"><b>Abstract:</b> This talk will discuss recent advancements toward deploying AI architectures in aerospace systems, spanning design-time, run-time, and validation-time guardrails. Emerging approaches to ensuring safety and reliability will be highlighted, with an emphasis on bridging the gap between learning-based methods and certifiable system performance.</div></div>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="time">16:30 &ndash; 17:00</td>
+            <td>
+              <div class="collapsible"><div class="talk-meta"><span class="who">Meeko Oishi<span class="inst">University of New Mexico</span></span><span class="talk-title">Chance Constraint Evaluation Through Successive Convexification</span></div></div>
+              <div class="abstract"><div class="inner"><b>Abstract:</b> One of the major challenges in stochastic optimal control under constraints is the evaluation of chance constraints. While closed-form expressions are available for special cases, such as linear dynamics with Gaussian disturbances and linear constraints, in general, efficient and accurate evaluation of chance constraints can be difficult. We focus here on computationally tractable methods for evaluating general chance constraints through a deterministic, differentiable approximation of the probabilistic level set. The resulting deterministic optimal control problem can then be solved using a successive convexification (SCvx) framework, which enables efficient computation.</div></div>
+            </td>
+          </tr>
+
+          <tr class="lightning"><td class="time">17:00 &ndash; 17:20</td><td>Lightning Round 3</td></tr>
+          <tr class="break"><td class="time">17:20 &ndash; 17:30</td><td>Closing Remarks</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ---------- Lightning Talks ---------- -->
+  <section id="lightning">
+    <div class="container">
+      <div class="section-head"><h2>Lightning Talks</h2></div>
+      <div class="prose">
+        <p>In addition to the invited speakers, the workshop agenda includes three short series of lightning talks by participating early-career researchers. The purpose is twofold: to disseminate new, not necessarily complete, results from the research community; and to provide a forum for younger members of the community to showcase their work and expand their professional networks.</p>
+        <p>We actively solicit lightning talk contributions from early-career researchers and underrepresented groups through an open call. Submission details and deadlines will be announced here. To express interest, please contact the <a href="mailto:ffotiadis@utexas.edu">organizers</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- Organizers ---------- -->
+  <section id="organizers">
+    <div class="container">
+      <div class="section-center">
+        <div class="section-head"><h2>Organizers</h2></div>
+      </div>
+      <div class="org-grid" style="margin-top:12px;">
+        <div class="person org">
+          <img class="avatar" src="images/organizers/Fotiadis.jpg" alt="" data-base="images/organizers/Fotiadis" data-init="FF" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{var d=document.createElement('div');d.className='avatar';d.textContent=this.dataset.init;this.replaceWith(d);}">
+          <h3>Filippos Fotiadis</h3>
+          <p class="role">Postdoctoral Fellow</p>
+          <p>UT Austin</p>
+        </div>
+        <div class="person org">
+          <img class="avatar" src="images/organizers/Tsiotras.jpg" alt="" data-base="images/organizers/Tsiotras" data-init="PT" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{var d=document.createElement('div');d.className='avatar';d.textContent=this.dataset.init;this.replaceWith(d);}">
+          <h3>Panagiotis Tsiotras</h3>
+          <p class="role">Professor</p>
+          <p>Georgia Tech</p>
+        </div>
+        <div class="person org">
+          <img class="avatar" src="images/organizers/Tanaka.jpg" alt="" data-base="images/organizers/Tanaka" data-init="TT" data-try="png" onerror="if(this.dataset.try==='png'){this.dataset.try='done';this.src=this.dataset.base+'.png';}else{var d=document.createElement('div');d.className='avatar';d.textContent=this.dataset.init;this.replaceWith(d);}">
+          <h3>Takashi Tanaka</h3>
+          <p class="role">Associate Professor</p>
+          <p>Purdue University</p>
+        </div>
+      </div>
+      <div id="registration" class="section-head" style="margin-top:56px;"><h2>Registration</h2></div>
+      <p class="org-contact">Register through the official <a href="https://cdc2026.ieeecss.org/registration" target="_blank" rel="noopener">IEEE CDC 2026 registration page</a>. Early registration closes September 4, 2026.</p>
+      <div class="section-head" style="margin-top:40px;"><h2>Contact</h2></div>
+      <p class="org-contact">For any questions regarding the workshop, please contact the <a href="mailto:ffotiadis@utexas.edu">workshop organizers</a>.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="foot-h">Workshop</div>
+          <p>Security and Safety of Space Systems: A Control-Theoretic Perspective</p>
+        </div>
+        <div>
+          <div class="foot-h">Event</div>
+          <p>65th IEEE Conference on Decision and Control (CDC)<br>Honolulu, Hawaii, USA &middot; December 14, 2026</p>
+        </div>
+        <div>
+          <div class="foot-h">Organizers</div>
+          <p>UT Austin &middot; Georgia Tech &middot; Purdue</p>
+        </div>
+        <div>
+          <div class="foot-h">Contact</div>
+          <p><a href="mailto:ffotiadis@utexas.edu">ffotiadis@utexas.edu</a><br>Questions? Email the organizers.</p>
+        </div>
+      </div>
+      <div class="foot-base">
+        <span>&copy; 2026 Workshop Organizers &middot; 65th IEEE Conference on Decision and Control</span>
+        <span class="foot-updated">Last updated July 2026</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Sticky nav background on scroll
+    var header = document.getElementById('site-header');
+    window.addEventListener('scroll', function () {
+      header.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // Mobile menu toggle
+    var toggle = document.querySelector('.menu-toggle');
+    var menu = document.getElementById('menu');
+    toggle.addEventListener('click', function () {
+      var open = menu.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open);
+    });
+    menu.addEventListener('click', function (e) {
+      if (e.target.tagName === 'A') menu.classList.remove('open');
+    });
+
+    // Collapsible abstracts
+    document.querySelectorAll('.collapsible').forEach(function (c) {
+      c.addEventListener('click', function () {
+        this.classList.toggle('active');
+        var panel = this.nextElementSibling;
+        panel.style.maxHeight = panel.style.maxHeight ? null : panel.scrollHeight + 'px';
+      });
+    });
+
+    // Scrollspy: highlight active nav link
+    var sections = document.querySelectorAll('section, .hero');
+    var links = document.querySelectorAll('#menu a');
+    window.addEventListener('scroll', function () {
+      var pos = window.scrollY + 120;
+      sections.forEach(function (sec) {
+        var link = document.querySelector('#menu a[href="#' + sec.id + '"]');
+        if (!link) return;
+        if (pos >= sec.offsetTop && pos < sec.offsetTop + sec.offsetHeight) {
+          links.forEach(function (l) { l.classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+
+</body>
+
+</html>
