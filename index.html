@@ -274,6 +274,34 @@
     }
     .news-date{ font-weight:bold; color:var(--ink); margin-right:10px; }
 
+    .news-list.collapsed li.news-hidden{ display:none; }
+    .news-toggle{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      margin-top:4px;
+      margin-left:25px;
+      padding:2px 6px;
+      background:none;
+      color:var(--muted);
+      border:none;
+      font-family:Georgia, serif;
+      font-size:1.1em;
+      line-height:1;
+      cursor:pointer;
+      transition:color .3s;
+    }
+    .news-toggle:hover{
+      color:var(--ink);
+    }
+    .news-toggle .news-toggle-arrow{
+      display:inline-block;
+      transition:transform .3s;
+    }
+    .news-toggle.expanded .news-toggle-arrow{
+      transform:rotate(180deg);
+    }
+
     a{ color:var(--link); text-decoration:none; transition:all .3s; }
     a:hover{ color:var(--link-hover); text-decoration:underline; }
 
@@ -383,21 +411,25 @@
         </div>
 
         <h2>Recent News</h2>
-        <ul class="news-list">
+        <ul class="news-list collapsed" id="news-list">
+		  <li><span class="news-date">[Nov 2026]</span> Our paper "Cislunar Pursuit-Evasion Game on Periodic and Quasi-Periodic Orbit" is conditionally accepted in the AIAA Journal of Guidance, Control, and Dynamics!</li>
 		  <li><span class="news-date">[Oct 2026]</span> Our paper "Deception Against Data-Driven Linear-Quadratic Control" is accepted in IEEE TAC!</li>
 		  <li><span class="news-date">[Sep 2026]</span> Our paper "Intermittent Learning for Trajectory Tracking Control with an Experimental Validation on Microdrones" is conditionally accepted in IEEE Transactions on Intelligent Vehicles!</li>
 		  <li><span class="news-date">[Aug 2026]</span> Our paper "Noncooperative Coordination via a Trading-based Auction" is accepted in IEEE TAC!</li>
-		  <li><span class="news-date">[Aug 2026]</span> Our paper "Characterizing Opinion Evolution of Networked LLMs" is accepted in EMNLP Findings 2026!</li>
-		  <li><span class="news-date">[Aug 2026]</span> Our paper "Approximate Feedback Nash Equilibria with Sparse Inter-Agent Dependencies" is conditionally accepted in IEEE TAC!</li>
-		  <li><span class="news-date">[Jul 2026]</span> Our CDC 2026 full-day workshop "<a href="https://fotiadisff.github.io/cdc2026-space-security/">Security and Safety of Space Systems: A Control-Theoretic Perspective</a>" has been accepted! Co-organized with Panagiotis Tsiotras and Takashi Tanaka.</li>
-		  <li><span class="news-date">[Jul 2026]</span> Three papers accepted at CDC 2026: "Robust Multi-Agent Reinforcement Learning for Small UAS Separation Assurance under GPS Degradation and Spoofing," "Greedy Methods via Reproducing Kernels for Approximations of Policy Iteration," and "Linear-Quadratic Gaussian Games with Distributed Sparse Estimation" (a dual submission with IEEE Control Systems Letters).</li>
-		  <li><span class="news-date">[Jul 2026]</span> Our paper "BHAR: A System-Level Optimization Framework for Multisensor Batteryless Human Activity Recognition" is accepted in IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems!</li>
-		  <li><span class="news-date">[May 2026]</span> Our paper "Linear-Quadratic Gaussian Games with Distributed Sparse Estimation" is accepted in IEEE Control Systems Letters!</li>
-          <li><span class="news-date">[Nov 2025]</span> Our paper "Input-Output Data-Driven Sensor Selection for Cyber-Physical Systems" is accepted in Automatica!</li>
-          <li><span class="news-date">[Feb 2025]</span> I received the Reviewer of the Year Award from the ASME Journal of Dynamic Systems, Measurement and Control.</li>
-          <li><span class="news-date">[Apr 2024]</span> I was selected as a <a href="https://risingstars.linklab.virginia.edu/2024/index.html">Rising Star in Cyber-Physical Systems</a> for 2024 (20% acceptance rate).</li>
-          <li><span class="news-date">[Jan 2024]</span> I was selected as an Outstanding Reviewer of IEEE Control Systems Letters for 2023 [<a href="pdfs/OutstandingReviewers_LCSS_2023-Fotiadis.pdf">pdf</a>].</li>
+		  <li class="news-hidden"><span class="news-date">[Aug 2026]</span> Our paper "Characterizing Opinion Evolution of Networked LLMs" is accepted in EMNLP Findings 2026!</li>
+		  <li class="news-hidden"><span class="news-date">[Aug 2026]</span> Our paper "Approximate Feedback Nash Equilibria with Sparse Inter-Agent Dependencies" is conditionally accepted in IEEE TAC!</li>
+		  <li class="news-hidden"><span class="news-date">[Jul 2026]</span> Our CDC 2026 full-day workshop "<a href="https://fotiadisff.github.io/cdc2026-space-security/">Security and Safety of Space Systems: A Control-Theoretic Perspective</a>" has been accepted! Co-organized with Panagiotis Tsiotras and Takashi Tanaka.</li>
+		  <li class="news-hidden"><span class="news-date">[Jul 2026]</span> Three papers accepted at CDC 2026: "Robust Multi-Agent Reinforcement Learning for Small UAS Separation Assurance under GPS Degradation and Spoofing," "Greedy Methods via Reproducing Kernels for Approximations of Policy Iteration," and "Linear-Quadratic Gaussian Games with Distributed Sparse Estimation" (a dual submission with IEEE Control Systems Letters).</li>
+		  <li class="news-hidden"><span class="news-date">[Jul 2026]</span> Our paper "BHAR: A System-Level Optimization Framework for Multisensor Batteryless Human Activity Recognition" is accepted in IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems!</li>
+		  <li class="news-hidden"><span class="news-date">[May 2026]</span> Our paper "Linear-Quadratic Gaussian Games with Distributed Sparse Estimation" is accepted in IEEE Control Systems Letters!</li>
+          <li class="news-hidden"><span class="news-date">[Nov 2025]</span> Our paper "Input-Output Data-Driven Sensor Selection for Cyber-Physical Systems" is accepted in Automatica!</li>
+          <li class="news-hidden"><span class="news-date">[Feb 2025]</span> I received the Reviewer of the Year Award from the ASME Journal of Dynamic Systems, Measurement and Control.</li>
+          <li class="news-hidden"><span class="news-date">[Apr 2024]</span> I was selected as a <a href="https://risingstars.linklab.virginia.edu/2024/index.html">Rising Star in Cyber-Physical Systems</a> for 2024 (20% acceptance rate).</li>
+          <li class="news-hidden"><span class="news-date">[Jan 2024]</span> I was selected as an Outstanding Reviewer of IEEE Control Systems Letters for 2023 [<a href="pdfs/OutstandingReviewers_LCSS_2023-Fotiadis.pdf">pdf</a>].</li>
         </ul>
+        <button type="button" class="news-toggle" id="news-toggle" onclick="toggleNews()" aria-expanded="false" aria-controls="news-list" aria-label="Show more news">
+          <span class="news-toggle-arrow">▾</span>
+        </button>
 
         <h2>Featured Research</h2>
 
@@ -727,9 +759,9 @@
 
         <h2>Journal Papers</h2>
         <ol class="pub-list">
-          <li>Q. Rommel<sup>*</sup>, <b>F. Fotiadis</b><sup>*</sup>, C. Armstrong, L. Peterson, U. Topcu, "Cislunar Pursuit-Evasion Game on Periodic and Quasi-Periodic Orbit," submitted.</li>
           <li><b>F. Fotiadis</b>, U. Topcu, "<a href="https://arxiv.org/pdf/2506.19829">Adversarial Observability and Performance Tradeoffs in Optimal Control</a>," submitted.</li>
           <li>S. Niu, A. Bouland, H. Wang, <b>F. Fotiadis</b>, A. Kurdila, A. L'Afflitto, S. T. Paruchuri, K. G. Vamvoudakis, "Tailoring Reproducing Kernels for Optimal Control via Policy Iteration," submitted.</li>
+          <li>Q. Rommel<sup>*</sup>, <b>F. Fotiadis</b><sup>*</sup>, C. Armstrong, L. Peterson, U. Topcu, "<a href="https://arxiv.org/pdf/2608.08151">Cislunar Pursuit-Evasion Game on Periodic and Quasi-Periodic Orbit</a>," conditionally accepted in <i>AIAA Journal of Guidance, Control, and Dynamics</i>, 2026.</li>
           <li><b>F. Fotiadis</b>, A. Kanellopoulos, K. G. Vamvoudakis, U. Topcu, "<a href="https://arxiv.org/pdf/2506.11373">Deception Against Data-Driven Linear-Quadratic Control</a>," to appear in <i>IEEE Transactions on Automatic Control</i>, 2027.</li>
           <li>J. Im, <b>F. Fotiadis</b>, D. Delahaye, U. Topcu, D. Fridovich-Keil, "<a href="https://arxiv.org/pdf/2502.03616">Noncooperative Coordination via a Trading-based Auction</a>," to appear in <i>IEEE Transactions on Automatic Control</i>, 2027.</li>
           <li>X. Liu, J. Li, <b>F. Fotiadis</b>, M. O. Karabag, J. Milzman, D. Fridovich-Keil, U. Topcu, "<a href="https://arxiv.org/pdf/2410.16441">Approximate Feedback Nash Equilibria with Sparse Inter-Agent Dependencies</a>," conditionally accepted in <i>IEEE Transactions on Automatic Control</i>, 2026.</li>
@@ -752,8 +784,8 @@
 
         <h2>Conference Papers</h2>
         <ol class="pub-list"> 
-          <li>Q. Rommel<sup>*</sup>, J. Im<sup>*</sup>, <b>F. Fotiadis</b>, S. Bettadpur, D. Fridovich-Keil, U. Topcu, "Noncooperative Spacecraft Collision Avoidance Using Correlated Coordination," submitted.</li>
-          <li><b>F. Fotiadis</b>, Q. Rommel, U. Topcu, "Game-Theoretic Spacecraft Maneuvering for Resilient Inter-Satellite Connectivity under Jamming," submitted.</li>
+          <li>Q. Rommel<sup>*</sup>, J. Im<sup>*</sup>, <b>F. Fotiadis</b>, S. Bettadpur, D. Fridovich-Keil, U. Topcu, "Noncooperative Spacecraft Collision Avoidance Using Correlated Coordination," to appear in <i>37th AAS/AIAA Space Flight Mechanics Meeting</i>, New Orleans, LA, 2027.</li>
+          <li><b>F. Fotiadis</b>, Q. Rommel, U. Topcu, "Game-Theoretic Spacecraft Maneuvering for Resilient Inter-Satellite Connectivity under Jamming," to appear in <i>37th AAS/AIAA Space Flight Mechanics Meeting</i>, New Orleans, LA, 2027.</li>
 		  <li>C. Probine, Y. E. Bayiz, <b>F. Fotiadis</b>, S. Li, Y. Yang, U. Topcu, "<a href="https://arxiv.org/pdf/2606.18276">Characterizing Opinion Evolution of Networked LLMs</a>," to appear in <i>EMNLP Findings</i>, 2026.</li>
 		  <li>A. Zongo, <b>F. Fotiadis</b>, U. Topcu, P. Wei, "<a href="https://arxiv.org/pdf/2603.28900">Robust Multi-Agent Reinforcement Learning for Small UAS Separation Assurance under GPS Degradation and Spoofing</a>," to appear in <i>IEEE Conference on Decision and Control</i>, Honolulu, HI, 2026.</li>
 		  <li>S. Niu, A. Bouland, H. Wang, <b>F. Fotiadis</b>, A. J. Kurdila, A. L'Afflitto, M. Liu, S. T. Paruchuri, K. G. Vamvoudakis, "Greedy Methods via Reproducing Kernels for Approximations of Policy Iteration," to appear in <i>IEEE Conference on Decision and Control</i>, Honolulu, HI, 2026.</li>
@@ -871,6 +903,15 @@
       document.querySelectorAll('.nav-link').forEach(a => a.classList.remove('active'));
       e.target.classList.add('active');
       window.scrollTo(0, 0);
+    }
+
+    function toggleNews(){
+      var list = document.getElementById('news-list');
+      var btn = document.getElementById('news-toggle');
+      var expanded = list.classList.toggle('collapsed') === false;
+      btn.classList.toggle('expanded', expanded);
+      btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      btn.setAttribute('aria-label', expanded ? 'Show less news' : 'Show more news');
     }
   </script>
 </body>
